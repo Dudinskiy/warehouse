@@ -7,7 +7,7 @@ function getProductList() {
     let xhttp = new XMLHttpRequest();
 
     xhttp.onload = function () {
-        if (xhttp.status == 200) {
+        if (xhttp.status === 200) {
             let producersFullDtoResList = JSON.parse(xhttp.response);
             let html = '<option value="">Товар не выбран</option>';
             console.log(producersFullDtoResList.length);

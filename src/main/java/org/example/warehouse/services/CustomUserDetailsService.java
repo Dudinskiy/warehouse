@@ -21,6 +21,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (user == null) {
             return null;
         }
+        System.out.println("UserDetails loadUserByUsername: " + user.getLogin() + user.getRole());
 
         return User.builder()
                 .username(user.getLogin())

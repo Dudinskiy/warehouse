@@ -5,3 +5,34 @@ p, h1, h2, h3, h4, table {
 select {
     width: 250px;
 }
+
+p {
+    font: 15px sans-serif
+}
+
+h1, h2, h3, h4 {
+    font-family: sans-serif
+}
+
+.headerContainer {
+    width: 100%;
+    background-color: #778899;
+    height: 8%;
+}
+
+.headerBox {
+    display: table;
+}
+
+.mainTitle {
+    display: table-cell;
+    width: 86.9%;
+}
+
+.login {
+    display: table-cell;
+}
+
+.login {
+    text-align: right;
+}

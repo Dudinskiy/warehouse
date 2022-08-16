@@ -16,7 +16,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
-
 @Controller
 @AllArgsConstructor
 @RequestMapping(value = "/user")
@@ -25,7 +24,7 @@ public class UsersController {
     private final UsersService usersService;
     private final RolesService rolesService;
 
-    @Secured("ROLE_Администратор")
+    @Secured({"ROLE_Администратор"})
     @GetMapping(value = "/add")
     public ModelAndView addUser() {
         ModelAndView modelAndView = new ModelAndView("addUser");
@@ -36,7 +35,7 @@ public class UsersController {
         return modelAndView;
     }
 
-    @Secured("ROLE_Администратор")
+    @Secured({"ROLE_Администратор"})
     @PostMapping(value = "/create")
     public ModelAndView createUser(@ModelAttribute UsersFullDto usersFullDto) {
         ModelAndView modelAndView = new ModelAndView("addUserRes");
@@ -50,7 +49,7 @@ public class UsersController {
         return modelAndView;
     }
 
-    @Secured("ROLE_Администратор")
+    @Secured({"ROLE_Администратор"})
     @GetMapping(value = "/get-by-login-form")
     public ModelAndView getUserByLoginForm() {
         ModelAndView modelAndView = new ModelAndView("getUserByLoginForm");
@@ -58,7 +57,7 @@ public class UsersController {
         return modelAndView;
     }
 
-    @Secured("ROLE_Администратор")
+    @Secured({"ROLE_Администратор"})
     @PostMapping(value = "/get-by-login")
     public ModelAndView getUserByLogin(@ModelAttribute UsersFullDto usersFullDto) {
         ModelAndView modelAndView = new ModelAndView("getUserByLogin");
@@ -67,7 +66,7 @@ public class UsersController {
         return modelAndView;
     }
 
-    @Secured("ROLE_Администратор")
+    @Secured({"ROLE_Администратор"})
     @GetMapping(value = "/get-all")
     public ModelAndView getAllUsers() {
         ModelAndView modelAndView = new ModelAndView("getAllUsers");
@@ -76,7 +75,7 @@ public class UsersController {
         return modelAndView;
     }
 
-    @Secured("ROLE_Администратор")
+    @Secured({"ROLE_Администратор"})
     @GetMapping(value = "/delete-by-login-form")
     public ModelAndView deleteUserByLoginForm() {
         ModelAndView modelAndView = new ModelAndView("deleteUserByLoginForm");
@@ -84,7 +83,7 @@ public class UsersController {
         return modelAndView;
     }
 
-    @Secured("ROLE_Администратор")
+    @Secured({"ROLE_Администратор"})
     @PostMapping(value = "/delete-by-login")
     public ModelAndView deleteUserByLogin(@ModelAttribute UsersFullDto usersFullDto) {
         ModelAndView modelAndView = new ModelAndView("deleteUserByLoginRes");

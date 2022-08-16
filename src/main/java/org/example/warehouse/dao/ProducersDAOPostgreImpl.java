@@ -2,6 +2,8 @@ package org.example.warehouse.dao;
 
 import org.example.warehouse.entities.ProducersEntity;
 import org.example.warehouse.entities.ProducersEntityFull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -15,6 +17,7 @@ import java.util.List;
 @Repository
 public class ProducersDAOPostgreImpl implements ProducersDAO {
     private final DataSource dataSource;
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProducersDAOPostgreImpl.class);
 
     public ProducersDAOPostgreImpl(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -31,7 +34,7 @@ public class ProducersDAOPostgreImpl implements ProducersDAO {
             statement.setInt(2, countryId);
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error creating Producer", e);
             return false;
         }
         return true;
@@ -57,7 +60,7 @@ public class ProducersDAOPostgreImpl implements ProducersDAO {
                 producer = new ProducersEntity(1, producerId, producerName, countryId);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error getting Producer by id", e);
         } finally {
             JdbcUtil.free(resultSet);
         }
@@ -84,7 +87,7 @@ public class ProducersDAOPostgreImpl implements ProducersDAO {
                 producer = new ProducersEntity(1, producerId, producerName, countryId);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error getting Producer by name", e);
         } finally {
             JdbcUtil.free(resultSet);
         }
@@ -118,7 +121,7 @@ public class ProducersDAOPostgreImpl implements ProducersDAO {
                         , producerName, countryName);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error getting ProducerFull by name", e);
         } finally {
             JdbcUtil.free(resultSet);
         }
@@ -151,7 +154,7 @@ public class ProducersDAOPostgreImpl implements ProducersDAO {
                 producerList.add(producer);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error getting all ProducerFull", e);
         }
         return producerList;
     }
@@ -165,7 +168,7 @@ public class ProducersDAOPostgreImpl implements ProducersDAO {
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error deleting Producer by id", e);
             return false;
         }
         return true;

@@ -1,6 +1,8 @@
 package org.example.warehouse.dao;
 
 import org.example.warehouse.entities.OperationTypeEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -14,6 +16,7 @@ import java.util.List;
 @Repository
 public class OperationTypeDAOPostgreImpl implements OperationTypeDAO {
     private final DataSource dataSource;
+    private static final Logger LOGGER = LoggerFactory.getLogger(OperationTypeDAOPostgreImpl.class);
 
     public OperationTypeDAOPostgreImpl(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -29,7 +32,7 @@ public class OperationTypeDAOPostgreImpl implements OperationTypeDAO {
             statement.setString(1, typeName);
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error creating OperationType", e);
             return false;
         }
         return true;
@@ -54,7 +57,7 @@ public class OperationTypeDAOPostgreImpl implements OperationTypeDAO {
                 operationType = new OperationTypeEntity(1, typeId, typeName);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error getting OperationType by id", e);
         } finally {
             JdbcUtil.free(resultSet);
         }
@@ -80,7 +83,7 @@ public class OperationTypeDAOPostgreImpl implements OperationTypeDAO {
                 operationType = new OperationTypeEntity(1, typeId, typeName);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error getting OperationType by name", e);
         } finally {
             JdbcUtil.free(resultSet);
         }
@@ -109,7 +112,7 @@ public class OperationTypeDAOPostgreImpl implements OperationTypeDAO {
                 operationTypeList.add(operationType);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error getting all OperationType", e);
         }
         return operationTypeList;
     }
@@ -123,7 +126,7 @@ public class OperationTypeDAOPostgreImpl implements OperationTypeDAO {
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error deleting OperationType by id", e);
             return false;
         }
         return true;

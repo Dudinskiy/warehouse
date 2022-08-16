@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.example.warehouse.dto.*;
 import org.example.warehouse.services.CountriesService;
 import org.example.warehouse.services.ProducersService;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -22,6 +23,7 @@ public class ProducersController {
     private final ProducersService producersService;
     private final CountriesService countriesService;
 
+    @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
     @GetMapping(value = "/add")
     public ModelAndView addProducer() {
         ModelAndView modelAndView = new ModelAndView("addProducer");
@@ -32,6 +34,7 @@ public class ProducersController {
         return modelAndView;
     }
 
+    @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
     @PostMapping(value = "/create")
     public ModelAndView createProducer(@ModelAttribute ProducersDto producersDto) {
         String response;
@@ -43,6 +46,7 @@ public class ProducersController {
         return new ModelAndView("addProducerRes", "response", response);
     }
 
+    @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
     @GetMapping(value = "/get-all")
     public ModelAndView getAllProducers() {
         ModelAndView modelAndView = new ModelAndView("getAllProducers");
@@ -55,6 +59,7 @@ public class ProducersController {
         return null;
     }
 
+    @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
     @GetMapping(value = "/get-by-name-form")
     public ModelAndView getCountryByNameForm() {
         ModelAndView modelAndView = new ModelAndView("getProducerByNameForm");
@@ -62,6 +67,7 @@ public class ProducersController {
         return modelAndView;
     }
 
+    @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
     @PostMapping(value = "/get-by-name")
     public ModelAndView getProducerByNameFull(@ModelAttribute ProducersFullDto producersFullDto) {
         ModelAndView modelAndView = new ModelAndView("getAllProducers");

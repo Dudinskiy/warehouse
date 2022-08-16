@@ -6,6 +6,7 @@ import org.example.warehouse.dto.OperationsDto;
 import org.example.warehouse.dto.OperationsDtoRes;
 import org.example.warehouse.dto.OperationsFullDtoRes;
 import org.example.warehouse.services.OperationsService;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,50 +18,59 @@ public class OperationsRestService {
 
     private final OperationsService operationsService;
 
+    @Secured({"ROLE_Кладовщик"})
     @PostMapping(value = "/create")
     public boolean createOperation(@RequestBody OperationsDto operationsDto) {
         return operationsService.createOperation(operationsDto);
     }
 
+    @Secured({"ROLE_Кладовщик"})
     @PostMapping(value = "/get-by-id")
     public OperationsDtoRes getOperationById(@RequestBody OperationsDto operationsDto) {
         return operationsService.getOperationById(operationsDto);
     }
 
+    @Secured({"ROLE_Кладовщик"})
     @PostMapping(value = "/get-by-invoice")
     public OperationsDtoRes getOperationByInvoice(@RequestBody OperationsDto operationsDto) {
         return operationsService.getOperationByInvoice(operationsDto);
     }
 
+    @Secured({"ROLE_Кладовщик"})
     @PostMapping(value = "get-by-invoice-full")
     public List<OperationsFullDtoRes> getOperationByInvoiceFull(
             @RequestBody  OperationsDto operationsDto){
         return operationsService.getOperationByInvoiceFull(operationsDto);
     }
 
+    @Secured({"ROLE_Кладовщик"})
     @GetMapping("/report-by-day")
     public OperationReportDtoRes getOperationReportByDay(){
         return operationsService.getOperationReportByDay();
     }
 
+    @Secured({"ROLE_Кладовщик"})
     @PostMapping(value = "/report-by-period")
     public OperationReportDtoRes getOperationReportByPeriod(
             @RequestBody OperationsDto operationsDto){
         return operationsService.getOperationReportByPeriod(operationsDto);
     }
 
+    @Secured({"ROLE_Кладовщик"})
     @PostMapping(value = "/report-by-day-type")
     public OperationReportDtoRes getOperationReportByDayAndTypeFull(
             @RequestBody OperationsDto operationsDto){
         return operationsService.getOperationReportByDayAndTypeFull(operationsDto);
     }
 
+    @Secured({"ROLE_Кладовщик"})
     @PostMapping(value = "/report-by-period-type")
     public OperationReportDtoRes getOperationReportByPeriodAndTypeFull(
             @RequestBody OperationsDto operationsDto){
         return operationsService.getOperationReportByPeriodAndTypeFull(operationsDto);
     }
 
+    @Secured({"ROLE_Кладовщик"})
     @PostMapping(value = "/delete")
     public boolean deleteOperationById(@RequestBody OperationsDto operationsDto) {
         return operationsService.deleteOperationById(operationsDto);

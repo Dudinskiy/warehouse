@@ -1,13 +1,31 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <meta charset="UTF-8">
+    <title>Домашняя страница</title>
+    <style>
+        <%@ include file="css/style.css"%>
+    </style>
 </head>
 <body>
 
 <header>
-    <div id="header" style="background-color:#778899; height:8%;">
-        <h1 style="margin-bottom:0;">Главный Заголовок Страницы</h1>
+    <div class="headerContainer">
+        <div class="headerBox">
+            <div class="mainTitle" id="header">
+                <h1 style="margin-bottom:0;">Система управления складом</h1>
+            </div>
+            <div class="login">
+                <p>
+                    <c:if test="${not empty pageContext.request.userPrincipal}">
+                        Текущий пользователь: <c:out value="${pageContext.request.userPrincipal.name}"></c:out>
+                    </c:if>
+                </p>
+                <p><a href="/warehouse/login">Войти</a> &nbsp; &nbsp;
+                    <a href="/warehouse/logout">Выйти</a></p>
+            </div>
+        </div>
     </div>
 </header>
 
@@ -15,7 +33,7 @@
 
     <div id="menu" style="background-color:#bebebe; height:100%; width:15%; float:left; ">
         <nav>
-            <div>Меню</div>
+            <p>Меню</p>
             <p><a href="/warehouse/operations/order-form">Создать список товаров</a></p>
             <p><a href="/warehouse/operations/operation-form">Создать товарную операцию</a></p>
             <p><a href="/warehouse/products/add">Внести товар в БД</a></p>
@@ -39,7 +57,9 @@
     </div>
 
     <div id="content" style="background-color:#d3d3d3; height:100%; width:85%; float:left;">
-        Главная страница
+        <h4><c:if test="${not empty pageContext.request.userPrincipal}">
+            Добро пожаловать,&nbsp;<c:out value="${pageContext.request.userPrincipal.name}"></c:out>
+        </c:if></h4>
     </div>
 </div>
 <footer>
@@ -50,4 +70,5 @@
 
 </body>
 </html>
+
 

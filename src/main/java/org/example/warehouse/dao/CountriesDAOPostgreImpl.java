@@ -2,6 +2,8 @@ package org.example.warehouse.dao;
 
 import lombok.AllArgsConstructor;
 import org.example.warehouse.entities.CountriesEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -16,6 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CountriesDAOPostgreImpl implements CountriesDAO {
     private final DataSource dataSource;
+    private static final Logger LOGGER = LoggerFactory.getLogger(CountriesDAOPostgreImpl.class);
 
     @Override
     public boolean createCountry(String countryName) {
@@ -27,7 +30,7 @@ public class CountriesDAOPostgreImpl implements CountriesDAO {
             statement.setString(1, countryName);
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error creating Country", e);
             return false;
         }
         return true;
@@ -52,7 +55,7 @@ public class CountriesDAOPostgreImpl implements CountriesDAO {
                 country = new CountriesEntity(1, countryId, countryName);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error getting Country by id", e);
         } finally {
             JdbcUtil.free(resultSet);
         }
@@ -79,7 +82,7 @@ public class CountriesDAOPostgreImpl implements CountriesDAO {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error getting Country by name", e);
         } finally {
             JdbcUtil.free(resultSet);
         }
@@ -107,7 +110,7 @@ public class CountriesDAOPostgreImpl implements CountriesDAO {
                 countriesEntityList.add(countriesEntity);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error getting all Countries", e);
         }
         return countriesEntityList;
     }
@@ -121,7 +124,7 @@ public class CountriesDAOPostgreImpl implements CountriesDAO {
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error deleting Country by id", e);
             return false;
         }
         return true;

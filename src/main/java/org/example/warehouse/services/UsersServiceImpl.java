@@ -25,16 +25,25 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public boolean createUser(UsersFullDto usersFullDto) {
         if (usersFullDto == null) {
+            System.out.println("usersFullDto == null");
             return false;
         }
+
         RolesEntity entity = rolesDAO.getRoleByName(usersFullDto.getRoleName());
+        System.out.println("usersFullDto.getRoleName(): " + usersFullDto.getRoleName());
+
         if (entity != null) {
+            System.out.println(entity.getRoleId());
+            System.out.println("password: " + bCryptPasswordEncoder.encode(usersFullDto.getPassword()));
+
             return usersDAO.createUser(usersFullDto.getFirstName()
                     , usersFullDto.getLastName()
                     , usersFullDto.getLogin()
                     , bCryptPasswordEncoder.encode(usersFullDto.getPassword())
                     , entity.getRoleId());
+
         } else {
+            System.out.println("entity = null");
             return false;
         }
     }

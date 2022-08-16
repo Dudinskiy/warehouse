@@ -2,6 +2,8 @@ package org.example.warehouse.dao;
 
 import org.example.warehouse.entities.OperationsEntity;
 import org.example.warehouse.entities.OperationsEntityFull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -17,6 +19,7 @@ import java.util.List;
 @Repository
 public class OperationsDAOPostgreImpl implements OperationsDAO {
     private final DataSource dataSource;
+    private static final Logger LOGGER = LoggerFactory.getLogger(OperationsDAOPostgreImpl.class);
 
     public OperationsDAOPostgreImpl(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -34,7 +37,7 @@ public class OperationsDAOPostgreImpl implements OperationsDAO {
             statement.setString(3, invoice);
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error creating Operation",e);
             return false;
         }
         return true;
@@ -64,7 +67,7 @@ public class OperationsDAOPostgreImpl implements OperationsDAO {
                         , operationDate, typeId, invoiceNumber, userId);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error getting Operation by id", e);
         } finally {
             JdbcUtil.free(resultSet);
         }
@@ -95,7 +98,7 @@ public class OperationsDAOPostgreImpl implements OperationsDAO {
                         , operationDate, typeId, invoiceNumber, userId);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error getting Operation by invoice", e);
         } finally {
             JdbcUtil.free(resultSet);
         }
@@ -159,7 +162,7 @@ public class OperationsDAOPostgreImpl implements OperationsDAO {
                 entityList.add(operation);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+           LOGGER.error("Error getting OperationFull by invoice", e);
         } finally {
             JdbcUtil.free(resultSet);
         }
@@ -227,7 +230,7 @@ public class OperationsDAOPostgreImpl implements OperationsDAO {
                 entityList.add(operation);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error getting all OperationFull by period", e);
         } finally {
             JdbcUtil.free(resultSet);
         }
@@ -298,7 +301,7 @@ public class OperationsDAOPostgreImpl implements OperationsDAO {
                 entityList.add(operation);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error getting OperationFull by period and type", e);
         } finally {
             JdbcUtil.free(resultSet);
         }
@@ -315,7 +318,7 @@ public class OperationsDAOPostgreImpl implements OperationsDAO {
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error deleting Operation by id", e);
             return false;
         }
         return true;

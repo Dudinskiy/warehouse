@@ -2,6 +2,8 @@ package org.example.warehouse.dao;
 
 import lombok.AllArgsConstructor;
 import org.example.warehouse.entities.UsersEntityFull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -16,6 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 public class UsersDAOPostgreImpl implements UsersDAO {
     private final DataSource dataSource;
+    private static final Logger LOGGER = LoggerFactory.getLogger(UsersDAOPostgreImpl.class);
 
     @Override
     public boolean createUser(String firstName, String lastName
@@ -33,7 +36,7 @@ public class UsersDAOPostgreImpl implements UsersDAO {
             statement.setInt(5, roleId);
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error creating User", e);
             return false;
         }
         return true;
@@ -74,7 +77,7 @@ public class UsersDAOPostgreImpl implements UsersDAO {
                         , loginRes, password, role);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error getting User by login", e);
         } finally {
             JdbcUtil.free(resultSet);
         }
@@ -112,7 +115,7 @@ public class UsersDAOPostgreImpl implements UsersDAO {
                         , lastName, loginRes, password, role));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error getting all Users", e);
         }
         return entityList;
     }
@@ -131,7 +134,7 @@ public class UsersDAOPostgreImpl implements UsersDAO {
             statement.setString(1, login);
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error deleting User by login", e);
             return false;
         }
         return true;

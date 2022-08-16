@@ -15,14 +15,30 @@
     <style>
         <%@ include file="css/style.css"%>
     </style>
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
 </head>
 
 <body>
 <header>
-    <div id="header" style="background-color:#778899; height:8%;">
-        <h1 style="margin-bottom:0;">Система управления складом</h1>
+    <div class="headerContainer">
+        <div class="headerBox">
+            <div class="mainTitle" id="header">
+                <h1 style="margin-bottom:0;">Система управления складом</h1>
+            </div>
+            <div class="login">
+                <p>
+                    <c:if test="${not empty pageContext.request.userPrincipal}">
+                        Текущий пользователь: <c:out value="${pageContext.request.userPrincipal.name}"></c:out>
+                    </c:if>
+                </p>
+                <p><a href="/warehouse/login">Войти</a> &nbsp; &nbsp;
+                    <a href="/warehouse/logout">Выйти</a></p>
+            </div>
+        </div>
     </div>
 </header>
+
 <div id="container" style="width:100%;">
     <div id="menu" style="background-color:#bebebe; height:100%; width:15%; float:left; ">
         <nav>
@@ -110,6 +126,11 @@
     function getProductList() {
         let selectBox = document.getElementById("producers");
         let producerName = selectBox.options[selectBox.selectedIndex].value;
+        let token = document.querySelector('meta[name="_csrf"]').content;
+        let csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+        console.log('token:' + token);
+        console.log('csrfHeader:' + csrfHeader);
+        console.log('producerNam:' + producerName);
 
         let xhttp = new XMLHttpRequest();
 
@@ -128,6 +149,7 @@
         }
         xhttp.open("POST", "http://localhost:8182/warehouse/rest/product/get-by-producer", true);
         xhttp.setRequestHeader("Content-Type", "application/json");
+        xhttp.setRequestHeader(csrfHeader, token);
         xhttp.send(JSON.stringify({
             productId: 0, productName: '', producerName: producerName
             , countryName: '', price: 0, productAmount: 0
@@ -136,8 +158,6 @@
 
     let elem1 = document.getElementById("producers");
     elem1.addEventListener('change', getProductList);
-
-<%--    <%@include file="js/getProductList.js"%>--%>
 </script>
 
 <footer>

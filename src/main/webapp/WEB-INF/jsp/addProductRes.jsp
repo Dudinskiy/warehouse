@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Александр
@@ -15,8 +16,21 @@
 </head>
 <body>
 <header>
-    <div id="header" style="background-color:#778899; height:8%;">
-        <h1 style="margin-bottom:0;">Главный Заголовок Страницы</h1>
+    <div class="headerContainer">
+        <div class="headerBox">
+            <div class="mainTitle" id="header">
+                <h1 style="margin-bottom:0;">Система управления складом</h1>
+            </div>
+            <div class="login">
+                <p>
+                    <c:if test="${not empty pageContext.request.userPrincipal}">
+                        Текущий пользователь: <c:out value="${pageContext.request.userPrincipal.name}"></c:out>
+                    </c:if>
+                </p>
+                <p><a href="/warehouse/login">Войти</a> &nbsp; &nbsp;
+                    <a href="/warehouse/logout">Выйти</a></p>
+            </div>
+        </div>
     </div>
 </header>
 

@@ -2,6 +2,8 @@ package org.example.warehouse.dao;
 
 import org.example.warehouse.entities.ProductsEntity;
 import org.example.warehouse.entities.ProductsEntityFull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -16,6 +18,7 @@ import java.util.List;
 @Repository
 public class ProductsDAOPostgreImpl implements ProductsDAO {
     private final DataSource dataSource;
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProductsDAOPostgreImpl.class);
 
     public ProductsDAOPostgreImpl(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -36,7 +39,7 @@ public class ProductsDAOPostgreImpl implements ProductsDAO {
             statement.setInt(4, 0);
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error creating Product", e);
             return false;
         }
         return true;
@@ -52,7 +55,7 @@ public class ProductsDAOPostgreImpl implements ProductsDAO {
             statement.setInt(2, productId);
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error updating product amount by id", e);
             return false;
         }
         return true;
@@ -81,7 +84,7 @@ public class ProductsDAOPostgreImpl implements ProductsDAO {
                         , price, productAmount);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error getting Product by id", e);
         } finally {
             JdbcUtil.free(resultSet);
         }
@@ -111,7 +114,7 @@ public class ProductsDAOPostgreImpl implements ProductsDAO {
                         , price, productAmount);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error getting Product by name", e);
         } finally {
             JdbcUtil.free(resultSet);
         }
@@ -152,7 +155,7 @@ public class ProductsDAOPostgreImpl implements ProductsDAO {
                         , producerName, countryName, price, productAmount);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error getting ProductFull by name", e);
         } finally {
             JdbcUtil.free(resultSet);
         }
@@ -193,7 +196,7 @@ public class ProductsDAOPostgreImpl implements ProductsDAO {
                 productList.add(product);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error getting all ProductsFull");
         }
         return productList;
     }
@@ -236,7 +239,7 @@ public class ProductsDAOPostgreImpl implements ProductsDAO {
                 productList.add(product);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error getting all ProductsFull by producer", e);
         } finally {
             JdbcUtil.free(resultSet);
         }
@@ -252,7 +255,7 @@ public class ProductsDAOPostgreImpl implements ProductsDAO {
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error deleting Product by id", e);
             return false;
         }
         return true;

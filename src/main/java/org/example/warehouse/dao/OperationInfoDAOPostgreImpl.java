@@ -1,6 +1,8 @@
 package org.example.warehouse.dao;
 
 import org.example.warehouse.entities.OperationInfoEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -11,6 +13,7 @@ import java.sql.SQLException;
 @Repository
 public class OperationInfoDAOPostgreImpl implements OperationInfoDAO {
     private final DataSource dataSource;
+    private static final Logger LOGGER = LoggerFactory.getLogger(OperationInfoDAOPostgreImpl.class);
 
     public OperationInfoDAOPostgreImpl(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -30,7 +33,7 @@ public class OperationInfoDAOPostgreImpl implements OperationInfoDAO {
 
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error creating OperationInfo", e);
             return false;
         }
         return true;
@@ -56,7 +59,7 @@ public class OperationInfoDAOPostgreImpl implements OperationInfoDAO {
                 operationInfo = new OperationInfoEntity(operationId, productId, productAmount);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error getting OperationInfo by operation id", e);
         } finally {
             JdbcUtil.free(resultSet);
         }
@@ -83,7 +86,7 @@ public class OperationInfoDAOPostgreImpl implements OperationInfoDAO {
                 operationInfo = new OperationInfoEntity(operationId, productId, productAmount);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error getting OperationInfo by product id", e);
         } finally {
             JdbcUtil.free(resultSet);
         }
@@ -111,7 +114,7 @@ public class OperationInfoDAOPostgreImpl implements OperationInfoDAO {
                 operationInfo = new OperationInfoEntity(operationId, productId, productAmount);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error getting OperationInfo by operation id and product id", e);
         } finally {
            JdbcUtil.free(resultSet);
         }
@@ -127,7 +130,7 @@ public class OperationInfoDAOPostgreImpl implements OperationInfoDAO {
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error deleting OperationInfo by operation id", e);
             return false;
         }
         return true;

@@ -2,6 +2,8 @@ package org.example.warehouse.dao;
 
 import lombok.AllArgsConstructor;
 import org.example.warehouse.entities.RolesEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -16,6 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 public class RolesDAOPostgreImpl implements RolesDAO {
     private final DataSource dataSource;
+    private static final Logger LOGGER = LoggerFactory.getLogger(RolesDAOPostgreImpl.class);
 
     @Override
     public RolesEntity getRoleByName(String roleName) {
@@ -36,7 +39,7 @@ public class RolesDAOPostgreImpl implements RolesDAO {
                 role = new RolesEntity(1, roleId, roleNameRes);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+           LOGGER.error("Error getting Role by name", e);
         } finally {
             JdbcUtil.free(resultSet);
         }
@@ -64,7 +67,7 @@ public class RolesDAOPostgreImpl implements RolesDAO {
                 roleList.add(new RolesEntity(rowNumber, roleId, roleName));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error getting all Roles", e);
         }
         return roleList;
     }

@@ -6,6 +6,7 @@ import org.example.warehouse.services.OperationTypeService;
 import org.example.warehouse.services.OperationsService;
 import org.example.warehouse.services.ProducersService;
 import org.example.warehouse.services.ProductsService;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -25,6 +26,7 @@ public class OperationsController {
     private List<ProductOrderDto> productOrderDtoList;
     private List<ProductsFullDtoRes> allProducts;
 
+    @Secured("ROLE_Кладовщик")
     @GetMapping(value = "/order-form")
     public ModelAndView addProductOrderForm() {
         ModelAndView modelAndView = new ModelAndView("addProductOrderForm");
@@ -38,6 +40,7 @@ public class OperationsController {
         return modelAndView;
     }
 
+    @Secured("ROLE_Кладовщик")
     @PostMapping(value = "/add-order")
     public ModelAndView addProductOrder(@ModelAttribute OperationsDto operationsDto) {
         ModelAndView modelAndView = new ModelAndView("redirect:/operations/order-form");
@@ -60,6 +63,7 @@ public class OperationsController {
         return modelAndView;
     }
 
+    @Secured("ROLE_Кладовщик")
     @GetMapping(value = "/delete-order/{productId}")
     public ModelAndView deleteProductOrder(@PathVariable int productId) {
         for (int i = 0; i < productOrderDtoList.size(); i++) {
@@ -70,6 +74,7 @@ public class OperationsController {
         return new ModelAndView("redirect:/operations/order-form");
     }
 
+    @Secured("ROLE_Кладовщик")
     @GetMapping(value = "/edit-order/{productId}")
     public ModelAndView editProductOrder(@PathVariable int productId) {
         for (int i = 0; i < productOrderDtoList.size(); i++) {
@@ -80,6 +85,7 @@ public class OperationsController {
         return new ModelAndView("redirect:/operations/order-form");
     }
 
+    @Secured("ROLE_Кладовщик")
     @GetMapping(value = "/operation-form")
     public ModelAndView createOperationForm() {
         ModelAndView modelAndView = new ModelAndView("addOperation");
@@ -91,6 +97,7 @@ public class OperationsController {
         return modelAndView;
     }
 
+    @Secured("ROLE_Кладовщик")
     @PostMapping(value = "/create")
     public ModelAndView createOperation(@ModelAttribute OperationsDto operationsDto) {
         ModelAndView modelAndView = new ModelAndView("getOperationRes");
@@ -103,6 +110,7 @@ public class OperationsController {
         return modelAndView;
     }
 
+    @Secured("ROLE_Кладовщик")
     @GetMapping(value = "/get-by-invoice-form")
     public ModelAndView getOperationByInvoiceFullForm() {
         ModelAndView modelAndView = new ModelAndView("getOperationByInvoiceForm");
@@ -111,6 +119,7 @@ public class OperationsController {
         return modelAndView;
     }
 
+    @Secured("ROLE_Кладовщик")
     @PostMapping(value = "/get-by-invoice")
     public ModelAndView getOperationByInvoiceFull(@ModelAttribute OperationsDto operationsDto) {
         ModelAndView modelAndView = new ModelAndView("getOperationRes");
@@ -120,6 +129,7 @@ public class OperationsController {
         return modelAndView;
     }
 
+    @Secured("ROLE_Кладовщик")
     @GetMapping(value = "/report-by-day")
     public ModelAndView getOperationReportByDay() {
         ModelAndView modelAndView = new ModelAndView("getOperationReportByDay");
@@ -128,6 +138,7 @@ public class OperationsController {
         return modelAndView;
     }
 
+    @Secured("ROLE_Кладовщик")
     @GetMapping(value = "/report-by-period-form")
     public ModelAndView getOperationReportByPeriodForm() {
         ModelAndView modelAndView = new ModelAndView("getOperationReportForm");
@@ -136,6 +147,7 @@ public class OperationsController {
         return modelAndView;
     }
 
+    @Secured("ROLE_Кладовщик")
     @PostMapping(value = "/report-by-period")
     public ModelAndView getOperationReportByPeriod(@ModelAttribute OperationsDto operationsDto) {
         LocalDate start = LocalDate.parse(operationsDto.getStart1());
@@ -150,6 +162,7 @@ public class OperationsController {
         return modelAndView;
     }
 
+    @Secured("ROLE_Кладовщик")
     @GetMapping(value = "/report-by-day-type-form")
     public ModelAndView getOperationReportByDayAndTypeForm() {
         ModelAndView modelAndView = new ModelAndView("getOperationReportByDayAndTypeForm");
@@ -160,6 +173,7 @@ public class OperationsController {
         return modelAndView;
     }
 
+    @Secured("ROLE_Кладовщик")
     @PostMapping(value = "/report-by-day-type")
     public ModelAndView getOperationReportByDayAndType(@ModelAttribute OperationsDto operationsDto) {
         OperationReportDtoRes operationReportDtoRes = operationsService
@@ -169,7 +183,7 @@ public class OperationsController {
         return modelAndView;
     }
 
-
+    @Secured("ROLE_Кладовщик")
     @GetMapping(value = "/report-by-period-type-form")
     public ModelAndView getOperationReportByPeriodAndTypeForm() {
         ModelAndView modelAndView = new ModelAndView("getOperationReportByPeriodAndTypeForm");
@@ -180,6 +194,7 @@ public class OperationsController {
         return modelAndView;
     }
 
+    @Secured("ROLE_Кладовщик")
     @PostMapping(value = "/report-by-period-type")
     public ModelAndView getOperationReportByPeriodAndType(@ModelAttribute OperationsDto operationsDto) {
         LocalDate start = LocalDate.parse(operationsDto.getStart1());

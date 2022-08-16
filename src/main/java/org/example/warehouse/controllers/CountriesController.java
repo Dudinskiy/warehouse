@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.example.warehouse.dto.CountriesDto;
 import org.example.warehouse.dto.CountriesDtoRes;
 import org.example.warehouse.services.CountriesService;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,6 +22,7 @@ public class CountriesController {
     private final CountriesService countriesService;
 
 
+    @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
     @GetMapping(value = "/add")
     public ModelAndView addCountry() {
         ModelAndView modelAndView = new ModelAndView("addCountry");
@@ -28,6 +30,7 @@ public class CountriesController {
         return modelAndView;
     }
 
+    @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
     @PostMapping(value = "/create")
     public ModelAndView createCountry(@ModelAttribute CountriesDto countriesDto) {
         String response;
@@ -39,6 +42,7 @@ public class CountriesController {
         return new ModelAndView("addCountryRes", "response", response);
     }
 
+    @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
     @GetMapping(value = "/get-all")
     public ModelAndView getAllCountries() {
         ModelAndView modelAndView = new ModelAndView("getAllCountries");
@@ -47,6 +51,7 @@ public class CountriesController {
         return modelAndView;
     }
 
+    @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
     @PostMapping(value = "/get-by-id")
     public ModelAndView getCountryById(@ModelAttribute CountriesDto countriesDto) {
         ModelAndView modelAndView = new ModelAndView("getAllCountries");
@@ -56,6 +61,7 @@ public class CountriesController {
         return modelAndView;
     }
 
+    @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
     @GetMapping(value = "/get-by-name-form")
     public ModelAndView getCountryByNameForm() {
         ModelAndView modelAndView = new ModelAndView("getCountryByNameForm");
@@ -63,6 +69,7 @@ public class CountriesController {
         return modelAndView;
     }
 
+    @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
     @PostMapping(value = "/get-by-name")
     public ModelAndView getCountryByName(@ModelAttribute CountriesDto countriesDto) {
         ModelAndView modelAndView = new ModelAndView("getAllCountries");
