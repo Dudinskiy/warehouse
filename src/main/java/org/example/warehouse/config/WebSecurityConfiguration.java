@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
@@ -37,9 +38,13 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService)
-                .passwordEncoder(bCryptPasswordEncoder());
+    public void configure(AuthenticationManagerBuilder auth) {
+        try {
+            auth.userDetailsService(userDetailsService)
+                    .passwordEncoder(bCryptPasswordEncoder());
+        } catch (Exception e) {
+            LOGGER.error("Error during security setup", e);
+        }
     }
 
 //    @Bean
@@ -61,9 +66,18 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 //        return source;
 //    }
 
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
-//    }
-
+    @Override
+    protected void configure(HttpSecurity http) {
+        try {
+            http.authorizeRequests()
+                    .and()
+                    .formLogin().permitAll()
+                    .and()
+                    .logout().permitAll()
+                    .and()
+                    .exceptionHandling().accessDeniedPage("/WEB-INF/jsp/accessDenied.jsp");
+        } catch (Exception e) {
+            LOGGER.error("Error during security setup", e);
+        }
+    }
 }

@@ -33,7 +33,7 @@
 
     <div id="menu" style="background-color:#bebebe; height:100%; width:15%; float:left; ">
         <nav>
-            <p>Меню</p>
+            <h2>Меню</h2>
             <p><a href="/warehouse/operations/order-form">Создать список товаров</a></p>
             <p><a href="/warehouse/operations/operation-form">Создать товарную операцию</a></p>
             <p><a href="/warehouse/products/add">Внести товар в БД</a></p>

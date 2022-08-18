@@ -1,5 +1,4 @@
 
-
 function getProductList() {
     let selectBox = document.getElementById("producers");
     let producerName = selectBox.options[selectBox.selectedIndex].value;

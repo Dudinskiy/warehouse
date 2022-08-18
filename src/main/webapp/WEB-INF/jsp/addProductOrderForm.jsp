@@ -128,9 +128,8 @@
         let producerName = selectBox.options[selectBox.selectedIndex].value;
         let token = document.querySelector('meta[name="_csrf"]').content;
         let csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
-        console.log('token:' + token);
-        console.log('csrfHeader:' + csrfHeader);
-        console.log('producerNam:' + producerName);
+        let port = ${pageContext.request.serverPort};
+        let url = 'http://localhost:' + port + '/warehouse/rest/product/get-by-producer';
 
         let xhttp = new XMLHttpRequest();
 
@@ -138,7 +137,7 @@
             if (xhttp.status == 200) {
                 let producersFullDtoResList = JSON.parse(xhttp.response);
                 let html = '<option value="">Товар не выбран</option>';
-                console.log(producersFullDtoResList.length);
+
                 for (let i = 0; i < producersFullDtoResList.length; i++) {
                     html = html + '<option value="' + producersFullDtoResList[i].productName + '">'
                         + producersFullDtoResList[i].productName + '</option>'
@@ -147,7 +146,7 @@
             }
             return false;
         }
-        xhttp.open("POST", "http://localhost:8182/warehouse/rest/product/get-by-producer", true);
+        xhttp.open("POST", url, true);
         xhttp.setRequestHeader("Content-Type", "application/json");
         xhttp.setRequestHeader(csrfHeader, token);
         xhttp.send(JSON.stringify({
