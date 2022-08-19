@@ -41,7 +41,7 @@ public class DataSourceConfig implements TransactionManagementConfigurer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DataSourceConfig.class);
 
-    @Bean
+    @Bean(destroyMethod = "")
     public DataSource dataSource() {
 //        SingleConnectionDataSource dataSource = new SingleConnectionDataSource();
 //
