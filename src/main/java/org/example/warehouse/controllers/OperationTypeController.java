@@ -1,16 +1,12 @@
 package org.example.warehouse.controllers;
 
 import lombok.AllArgsConstructor;
-import org.example.warehouse.dto.CountriesDto;
 import org.example.warehouse.dto.OperationTypeDto;
 import org.example.warehouse.dto.OperationTypeDtoRes;
 import org.example.warehouse.services.OperationTypeService;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
@@ -52,11 +48,11 @@ public class OperationTypeController {
     }
 
     @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
-    @PostMapping(value = "/get-by-id")
-    public ModelAndView getOperationTypeById(@ModelAttribute OperationTypeDto operationTypeDto) {
+    @GetMapping(value = "/get-by-id/{id}")
+    public ModelAndView getOperationTypeById(@PathVariable int id) {
         ModelAndView modelAndView = new ModelAndView("getAllOperationType");
         List<OperationTypeDtoRes> operationTypeDtoResList = new ArrayList<>();
-        operationTypeDtoResList.add(operationTypeService.getOperationTypeById(operationTypeDto));
+        operationTypeDtoResList.add(operationTypeService.getOperationTypeById(id));
         modelAndView.addObject("operationTypeDtoResList", operationTypeDtoResList);
         return modelAndView;
     }
@@ -74,12 +70,8 @@ public class OperationTypeController {
     public ModelAndView getOperationTypeByName(@ModelAttribute OperationTypeDto operationTypeDto) {
         ModelAndView modelAndView = new ModelAndView("getAllOperationType");
         List<OperationTypeDtoRes> operationTypeDtoResList = new ArrayList<>();
-        operationTypeDtoResList.add(operationTypeService.getOperationTypeByName(operationTypeDto));
+        operationTypeDtoResList.add(operationTypeService.getOperationTypeByType(operationTypeDto));
         modelAndView.addObject("operationTypeDtoResList", operationTypeDtoResList);
         return modelAndView;
-    }
-
-    public ModelAndView deleteOperationTypeById(OperationTypeDto operationTypeDto) {
-        return null;
     }
 }

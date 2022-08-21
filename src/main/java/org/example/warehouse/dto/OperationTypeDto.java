@@ -8,4 +8,5 @@ import lombok.experimental.Accessors;
 public class OperationTypeDto {
     private int typeId;
     private String typeName;
+    private String type;
 }

@@ -15,6 +15,7 @@ public class OperationsEntityFull {
     private int operationId;
     private LocalDateTime operationDate;
     private String  typeName;
+    private String  type;
     private String invoiceNumber;
     private int productId;
     private String productName;

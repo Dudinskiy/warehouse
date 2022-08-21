@@ -30,28 +30,20 @@ CREATE TABLE IF NOT EXISTS lab2_da_operationType
 (
     typeId   SERIAL,
     typeName VARCHAR NOT NULL,
+    type     VARCHAR NOT NULL,
     CONSTRAINT lab2_da_operationType_pk PRIMARY KEY (typeId),
-    CONSTRAINT lab2_da_operationType_name_uk UNIQUE (typeName)
-);
-
-CREATE TABLE IF NOT EXISTS lab2_da_operations
-(
-    operationId   SERIAL,
-    operationDate TIMESTAMP NOT NULL,
-    typeId        INTEGER   NOT NULL,
-    invoiceNumber VARCHAR   NOT NULL,
-    userId        INTEGER   NOT NULL,
-    CONSTRAINT lab2_da_operations_pk PRIMARY KEY (operationId),
-    CONSTRAINT lab2_da_operations_typeId_fk FOREIGN KEY (typeId) REFERENCES lab2_da_operationType (typeId),
-    CONSTRAINT lab2_da_operations_userId_fk FOREIGN KEY (userId) REFERENCES lab2_da_users (userId)
+    CONSTRAINT lab2_da_operationType_name_uk UNIQUE (typeName),
+    CONSTRAINT lab2_da_operationType_type_uk UNIQUE (type)
 );
 
 CREATE TABLE IF NOT EXISTS lab2_da_roles
 (
     roleId   SERIAL,
     roleName VARCHAR NOT NULL,
+    role     VARCHAR NOT NULL,
     CONSTRAINT lab2_da_roles_pk PRIMARY KEY (roleId),
-    CONSTRAINT lab2_da_roles_name_uk UNIQUE (roleName)
+    CONSTRAINT lab2_da_roles_name_uk UNIQUE (roleName),
+    CONSTRAINT lab2_da_roles_role_uk UNIQUE (role)
 );
 
 CREATE TABLE IF NOT EXISTS lab2_da_users
@@ -67,6 +59,18 @@ CREATE TABLE IF NOT EXISTS lab2_da_users
     CONSTRAINT lab2_da_users_roleId_fk FOREIGN KEY (roleId) REFERENCES lab2_da_roles (roleId)
 );
 
+CREATE TABLE IF NOT EXISTS lab2_da_operations
+(
+    operationId   SERIAL,
+    operationDate TIMESTAMP NOT NULL,
+    typeId        INTEGER   NOT NULL,
+    invoiceNumber VARCHAR   NOT NULL,
+    userId        INTEGER   NOT NULL,
+    CONSTRAINT lab2_da_operations_pk PRIMARY KEY (operationId),
+    CONSTRAINT lab2_da_operations_typeId_fk FOREIGN KEY (typeId) REFERENCES lab2_da_operationType (typeId),
+    CONSTRAINT lab2_da_operations_userId_fk FOREIGN KEY (userId) REFERENCES lab2_da_users (userId)
+);
+
 CREATE TABLE IF NOT EXISTS lab2_da_operationInfo
 (
     operationId   INTEGER NOT NULL,
@@ -76,29 +80,53 @@ CREATE TABLE IF NOT EXISTS lab2_da_operationInfo
     CONSTRAINT lab2_da_operationInfo_productId_fk FOREIGN KEY (productId) REFERENCES lab2_da_products (productId)
 );
 
-INSERT INTO lab2_da_roles (roleName)
-SELECT 'Администратор'
-WHERE NOT EXISTS(SELECT roleName FROM lab2_da_roles WHERE roleName = 'Администратор');
+INSERT INTO lab2_da_roles (roleName, role)
+SELECT 'Администратор',
+       'Administrator'
+WHERE NOT EXISTS(SELECT roleName, role
+                 FROM lab2_da_roles
+                 WHERE roleName = 'Администратор'
+                   AND role = 'Administrator');
 
-INSERT INTO lab2_da_roles (roleName)
-SELECT 'Кладовщик'
-WHERE NOT EXISTS(SELECT roleName FROM lab2_da_roles WHERE roleName = 'Кладовщик');
+INSERT INTO lab2_da_roles (roleName, role)
+SELECT 'Кладовщик',
+       'Storekeeper'
+WHERE NOT EXISTS(SELECT roleName, role
+                 FROM lab2_da_roles
+                 WHERE roleName = 'Кладовщик'
+                   AND role = 'Storekeeper');
 
-INSERT INTO lab2_da_roles (roleName)
-SELECT 'Сотрудник'
-WHERE NOT EXISTS(SELECT roleName FROM lab2_da_roles WHERE roleName = 'Сотрудник');
+INSERT INTO lab2_da_roles (roleName, role)
+SELECT 'Сотрудник',
+       'Employee'
+WHERE NOT EXISTS(SELECT roleName, role
+                 FROM lab2_da_roles
+                 WHERE roleName = 'Сотрудник'
+                   AND role = 'Employee');
 
-INSERT INTO lab2_da_operationType (typeName)
-SELECT 'Получение'
-WHERE NOT EXISTS(SELECT typeName FROM lab2_da_operationType WHERE typeName = 'Получение');
+INSERT INTO lab2_da_operationType (typeName, type)
+SELECT 'Получение',
+       'Reception'
+WHERE NOT EXISTS(SELECT typeName, type
+                 FROM lab2_da_operationType
+                 WHERE typeName = 'Получение'
+                   AND type = 'Reception');
 
-INSERT INTO lab2_da_operationType (typeName)
-SELECT 'Отгрузка'
-WHERE NOT EXISTS(SELECT typeName FROM lab2_da_operationType WHERE typeName = 'Отгрузка');
+INSERT INTO lab2_da_operationType (typeName, type)
+SELECT 'Отгрузка',
+       'Shipment'
+WHERE NOT EXISTS(SELECT typeName, type
+                 FROM lab2_da_operationType
+                 WHERE typeName = 'Отгрузка'
+                   AND type = 'Shipment');
 
-INSERT INTO lab2_da_operationType (typeName)
-SELECT 'Списание'
-WHERE NOT EXISTS(SELECT typeName FROM lab2_da_operationType WHERE typeName = 'Списание');
+INSERT INTO lab2_da_operationType (typeName, type)
+SELECT 'Списание',
+       'Write-off'
+WHERE NOT EXISTS(SELECT typeName
+                 FROM lab2_da_operationType
+                 WHERE typeName = 'Списание'
+                   AND type = 'Write-off');
 
 INSERT INTO lab2_da_users (firstName, lastName, login, password, roleId)
 SELECT 'admin'

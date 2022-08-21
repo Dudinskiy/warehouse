@@ -23,9 +23,9 @@ public class CountriesRestController {
     }
 
     @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
-    @PostMapping(value = "/get-by-id")
-    public CountriesDtoRes getCountryById(@RequestBody CountriesDto countriesDto) {
-        return countriesService.getCountryById(countriesDto);
+    @PostMapping(value = "/get-by-id/{id}")
+    public CountriesDtoRes getCountryById(@PathVariable int id) {
+        return countriesService.getCountryById(id);
     }
 
     @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
@@ -35,9 +35,9 @@ public class CountriesRestController {
     }
 
     @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
-    @PostMapping(value = "/delete")
-    public boolean deleteCountryById(@RequestBody CountriesDto countriesDto) {
-        return countriesService.deleteCountryById(countriesDto);
+    @DeleteMapping(value = "/delete/{id}")
+    public boolean deleteCountryById(@PathVariable int id) {
+        return countriesService.deleteCountryById(id);
     }
 
     @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})

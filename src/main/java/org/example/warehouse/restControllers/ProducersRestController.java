@@ -25,9 +25,9 @@ public class ProducersRestController {
     }
 
     @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
-    @PostMapping(value = "/get-by-id")
-    public ProducersDtoRes getProducerById(@RequestBody ProducersDto producersDto) {
-        return producersService.getProducerById(producersDto);
+    @GetMapping(value = "/get-by-id/{id}")
+    public ProducersDtoRes getProducerById(@PathVariable int id) {
+        return producersService.getProducerById(id);
     }
 
     @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
@@ -49,8 +49,8 @@ public class ProducersRestController {
     }
 
     @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
-    @PostMapping(value = "/delete")
-    public boolean deleteProducerById(@RequestBody ProducersDto producersDto) {
-        return producersService.deleteProducerById(producersDto);
+    @DeleteMapping(value = "/delete/{id}")
+    public boolean deleteProducerById(@PathVariable int id) {
+        return producersService.deleteProducerById(id);
     }
 }

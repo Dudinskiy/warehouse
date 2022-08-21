@@ -1,21 +1,21 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Александр
-  Date: 02.08.2022
-  Time: 17:14
+  Date: 06.08.2022
+  Time: 18:21
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" language="java" %>
+<%@page isErrorPage="true" %>
 <html>
 <head>
-    <title>Список товаров</title>
     <style>
         <%@ include file="css/style.css"%>
     </style>
 </head>
 <body>
+
 <header>
     <div class="headerContainer">
         <div class="headerBox">
@@ -34,11 +34,14 @@
         </div>
     </div>
 </header>
+
 <div id="container" style="width:100%">
+
     <div id="menu" style="background-color:#bebebe; height:100%; width:15%; float:left; ">
         <nav>
             <h2>Меню</h2>
             <p><a href="/warehouse/operations/order-form">Создать список товаров</a></p>
+            <p><a href="/warehouse/operations/clean-order">Очистить список товаров</a></p>
             <p><a href="/warehouse/operations/operation-form">Создать товарную операцию</a></p>
             <p><a href="/warehouse/products/add">Внести товар в БД</a></p>
             <p><a href="/warehouse/producers/add">Внести производителя в БД</a></p>
@@ -57,71 +60,19 @@
             <p><a href="/warehouse/user/get-by-login-form">Посмотреть пользователя</a></p>
             <p><a href="/warehouse/user/get-all">Посмотреть всех пользователей</a></p>
             <p><a href="/warehouse/user/delete-by-login-form">Удалить пользователя</a></p>
+            <p><a href="/warehouse/reference">Справка</a></p>
         </nav>
     </div>
 
     <div id="content" style="background-color:#d3d3d3; height:100%; width:85%; float:left;">
-
-        <h3>Добавить товар:</h3>
-        <form:form modelAttribute="operationsDto" action="/warehouse/operations/add-order" method="post">
-            <table>
-                <tr>
-                    <td>Производитель:</td>
-                    <td><form:select path="producerName">
-                        <form:option value="">Производитель не выбран</form:option>
-                        <c:forEach var="producersFullDtoRes" items="${operationsDto.allProducers}">
-                            <form:option value="${producersFullDtoRes.producerName}"></form:option>
-                        </c:forEach>
-                    </form:select></td>
-                </tr>
-                <tr>
-                    <td>Товар:</td>
-                    <td><form:select path="productName">
-                        <form:option value="">Товар не выбран</form:option>
-                        <c:forEach var="operationTypeDtoRes" items="${operationsDto.allProducts}">
-                            <form:option value="${operationTypeDtoRes.productName}"></form:option>
-                        </c:forEach>
-                    </form:select></td>
-                    <td>Количество:</td>
-                    <td><form:input path="operationProdAmount"/></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><input type="submit" value="Добавить"></td>
-                </tr>
-            </table>
-        </form:form>
-
-        <h3>Добавленные товары:</h3>
-        <table border="1" cellspacing="2" , cellpadding="10">
-            <tr>
-                <th>Инд. номер</th>
-                <th>Наименование</th>
-                <th>Количество</th>
-                <th>Количество на складе</th>
-                <th>Изменить</th>
-                <th>Удалить</th>
-            </tr>
-            <c:forEach var="product" items="${operationsDto.productList}">
-                <tr>
-                    <td>${product.productId}</td>
-                    <td>${product.productName}</td>
-                    <td>${product.operationProdAmount}</td>
-                    <td>${product.currentProdAmount}</td>
-                    <td>Изменить</td>
-                    <td><a href="/warehouse/operations/delete-order/${product.productId}">Удалить</a></td>
-                </tr>
-            </c:forEach>
-        </table>
-        <h3><a href="/warehouse/operations/operation-form">Создать товарную операцию</a></h3>
+        <p>${message}</p>
     </div>
 </div>
-
 <footer>
     <div id="footer" style="background-color:#778899; clear:both; text-align:center;">
-        © Uroki-HTML.ru
+        © Александр Дудинский
     </div>
 </footer>
+
 </body>
 </html>
-

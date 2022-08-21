@@ -26,12 +26,11 @@ public class OperationTypeServiceImpl implements OperationTypeService {
     }
 
     @Override
-    public OperationTypeDtoRes getOperationTypeById(OperationTypeDto operationTypeDto) {
-        if (operationTypeDto == null) {
+    public OperationTypeDtoRes getOperationTypeById(int id) {
+        if (id == 0) {
             return null;
         }
-        OperationTypeEntity entity = operationTypeDAO.getOperationTypeById(
-                operationTypeDto.getTypeId());
+        OperationTypeEntity entity = operationTypeDAO.getOperationTypeById(id);
         OperationTypeDtoRes typeDtoRes = null;
         if (entity != null) {
             typeDtoRes = new OperationTypeDtoRes()
@@ -43,18 +42,19 @@ public class OperationTypeServiceImpl implements OperationTypeService {
     }
 
     @Override
-    public OperationTypeDtoRes getOperationTypeByName(OperationTypeDto operationTypeDto) {
+    public OperationTypeDtoRes getOperationTypeByType(OperationTypeDto operationTypeDto) {
         if (operationTypeDto == null) {
             return null;
         }
-        OperationTypeEntity entity = operationTypeDAO.getOperationTypeByName(
-                operationTypeDto.getTypeName());
+        OperationTypeEntity entity = operationTypeDAO.getOperationTypeByType(
+                operationTypeDto.getType());
         OperationTypeDtoRes typeDtoRes = null;
         if (entity != null) {
             typeDtoRes = new OperationTypeDtoRes()
                     .setRowNumber(entity.getRowNumber())
                     .setTypeId(entity.getTypeId())
-                    .setTypeName(entity.getTypeName());
+                    .setTypeName(entity.getTypeName())
+                    .setType(entity.getType());
         }
         return typeDtoRes;
     }
@@ -68,16 +68,17 @@ public class OperationTypeServiceImpl implements OperationTypeService {
             dtoResList.add(new OperationTypeDtoRes()
                     .setRowNumber(entity.getRowNumber())
                     .setTypeId(entity.getTypeId())
-                    .setTypeName(entity.getTypeName()));
+                    .setTypeName(entity.getTypeName())
+                    .setType(entity.getType()));
         }
         return dtoResList;
     }
 
     @Override
-    public boolean deleteOperationTypeById(OperationTypeDto operationTypeDto) {
-        if (operationTypeDto == null) {
+    public boolean deleteOperationTypeById(int id) {
+        if (id == 0) {
             return false;
         }
-        return operationTypeDAO.deleteOperationTypeById(operationTypeDto.getTypeId());
+        return operationTypeDAO.deleteOperationTypeById(id);
     }
 }

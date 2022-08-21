@@ -11,4 +11,5 @@ public class OperationTypeEntity {
     private int rowNumber;
     private int typeId;
     private String typeName;
+    private String type;
 }

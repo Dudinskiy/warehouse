@@ -23,15 +23,15 @@ public class OperationTypeRestController {
     }
 
     @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
-    @PostMapping(value = "/get-by-id")
-    public OperationTypeDtoRes getOperationTypeById(@RequestBody OperationTypeDto operationTypeDto) {
-        return operationTypeService.getOperationTypeById(operationTypeDto);
+    @GetMapping(value = "/get-by-id/{id}")
+    public OperationTypeDtoRes getOperationTypeById(@PathVariable int id) {
+        return operationTypeService.getOperationTypeById(id);
     }
 
     @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
     @PostMapping(value = "/get-by-name")
     public OperationTypeDtoRes getOperationTypeByName(@RequestBody OperationTypeDto operationTypeDto) {
-        return operationTypeService.getOperationTypeByName(operationTypeDto);
+        return operationTypeService.getOperationTypeByType(operationTypeDto);
     }
 
     @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
@@ -41,8 +41,8 @@ public class OperationTypeRestController {
     }
 
     @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
-    @PostMapping(value = "/delete")
-    public boolean deleteOperationTypeById(@RequestBody OperationTypeDto operationTypeDto) {
-        return operationTypeService.deleteOperationTypeById(operationTypeDto);
+    @DeleteMapping(value = "/delete/{id}")
+    public boolean deleteOperationTypeById(@PathVariable int id) {
+        return operationTypeService.deleteOperationTypeById(id);
     }
 }

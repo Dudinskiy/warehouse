@@ -18,4 +18,7 @@ public class OperationsFullDtoRes {
     private int productAmount;
     private String producerName;
     private String countryName;
+    private int userId;
+    private String firstName;
+    private String lastName;
 }

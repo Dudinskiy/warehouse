@@ -9,7 +9,7 @@ public interface OperationTypeDAO {
 
     OperationTypeEntity getOperationTypeById(int id);
 
-    OperationTypeEntity getOperationTypeByName(String name);
+    OperationTypeEntity getOperationTypeByType(String type);
 
     List<OperationTypeEntity> getAllOperationType();
 

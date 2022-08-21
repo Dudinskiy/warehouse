@@ -25,9 +25,9 @@ public class OperationsRestService {
     }
 
     @Secured({"ROLE_Кладовщик"})
-    @PostMapping(value = "/get-by-id")
-    public OperationsDtoRes getOperationById(@RequestBody OperationsDto operationsDto) {
-        return operationsService.getOperationById(operationsDto);
+    @PostMapping(value = "/get-by-id/{id}")
+    public OperationsDtoRes getOperationById(@PathVariable int id) {
+        return operationsService.getOperationById(id);
     }
 
     @Secured({"ROLE_Кладовщик"})
@@ -71,8 +71,8 @@ public class OperationsRestService {
     }
 
     @Secured({"ROLE_Кладовщик"})
-    @PostMapping(value = "/delete")
-    public boolean deleteOperationById(@RequestBody OperationsDto operationsDto) {
-        return operationsService.deleteOperationById(operationsDto);
+    @DeleteMapping(value = "/delete/{id}")
+    public boolean deleteOperationById(@PathVariable int id) {
+        return operationsService.deleteOperationById(id);
     }
 }

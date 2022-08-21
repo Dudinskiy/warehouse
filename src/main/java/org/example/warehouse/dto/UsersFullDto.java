@@ -13,6 +13,6 @@ public class UsersFullDto {
     private String lastName;
     private String login;
     private String password;
-    private String roleName;
+    private String role;
     private List<RolesDtoRes> rolesList;
 }

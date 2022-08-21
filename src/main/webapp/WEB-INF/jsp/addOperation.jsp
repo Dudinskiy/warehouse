@@ -41,6 +41,7 @@
         <nav>
             <h2>Меню</h2>
             <p><a href="/warehouse/operations/order-form">Создать список товаров</a></p>
+            <p><a href="/warehouse/operations/clean-order">Очистить список товаров</a></p>
             <p><a href="/warehouse/operations/operation-form">Создать товарную операцию</a></p>
             <p><a href="/warehouse/products/add">Внести товар в БД</a></p>
             <p><a href="/warehouse/producers/add">Внести производителя в БД</a></p>
@@ -59,6 +60,7 @@
             <p><a href="/warehouse/user/get-by-login-form">Посмотреть пользователя</a></p>
             <p><a href="/warehouse/user/get-all">Посмотреть всех пользователей</a></p>
             <p><a href="/warehouse/user/delete-by-login-form">Удалить пользователя</a></p>
+            <p><a href="/warehouse/reference">Справка</a></p>
         </nav>
     </div>
 
@@ -66,6 +68,7 @@
 
         <h3>Новая товарная операция:</h3>
         <form:form modelAttribute="operationsDto" action="/warehouse/operations/create" method="post">
+            <input name="login" type="hidden" value="${pageContext.request.userPrincipal.name}">
             <table>
                 <tr>
                     <td>Номер инвойса:</td>
@@ -73,10 +76,10 @@
                 </tr>
                 <tr>
                     <td>Тип операции:</td>
-                    <td><form:select path="typeName">
+                    <td><form:select path="type">
                         <form:option value="">Тип не выбран</form:option>
                         <c:forEach var="operationTypeDtoRes" items="${operationsDto.operationTypeList}">
-                            <form:option value="${operationTypeDtoRes.typeName}"></form:option>
+                            <form:option value="${operationTypeDtoRes.type}">${operationTypeDtoRes.typeName}</form:option>
                         </c:forEach>
                     </form:select>
                     </td>
@@ -106,13 +109,13 @@
                 </tr>
             </c:forEach>
         </table>
-        <h3><a href="/warehouse/operations/order-form">Редактировать список</a></h3>
+        <h4><a href="/warehouse/operations/order-form">Редактировать список</a></h4>
 
     </div>
 </div>
 <footer>
     <div id="footer" style="background-color:#778899; clear:both; text-align:center;">
-        © Uroki-HTML.ru
+        © Александр Дудинский
     </div>
 </footer>
 

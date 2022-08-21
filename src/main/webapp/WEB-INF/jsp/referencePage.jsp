@@ -1,16 +1,9 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Александр
-  Date: 31.07.2022
-  Time: 18:07
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>Страна</title>
+    <title>Домашняя страница</title>
     <style>
         <%@ include file="css/style.css"%>
     </style>
@@ -37,6 +30,7 @@
 </header>
 
 <div id="container" style="width:100%">
+
     <div id="menu" style="background-color:#bebebe; height:100%; width:15%; float:left; ">
         <nav>
             <h2>Меню</h2>
@@ -65,24 +59,17 @@
     </div>
 
     <div id="content" style="background-color:#d3d3d3; height:100%; width:85%; float:left;">
-
-        <h2>Добавить страну:</h2>
-        <form:form modelAttribute="countriesDto" action="/warehouse/countries/create" method="post">
-            <table>
-                <tr>
-                    <td>Введите наименование:</td>
-                    <td><form:input path="countryName"/></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><input type="submit" value="Сохранить"></td>
-                </tr>
-            </table>
-        </form:form>
-
+        <h3>Справочная информация</h3>
+        <p>Данное приложение создано в учебных целях в рамках курса "Программирование на языке Java"
+            от компании <b>Netcracker</b></p>
+        <p>Приложение имитирует работу системы учета товарного склада. Приложение управляет
+            жизненным циклом товаров на складе и позволяет осуществлять следующие операции над товарами:
+            прием на склад, отгрузку со склада и списание товара</p>
+        <p>Приложение предоставляет отчетность по проведенным товарным операциям, как за текущий день,
+            так и за определенный период. Есть возможность получить отчетность по отдельно взятому
+            типу товарной операции</p>
     </div>
 </div>
-
 <footer>
     <div id="footer" style="background-color:#778899; clear:both; text-align:center;">
         © Александр Дудинский
@@ -91,3 +78,5 @@
 
 </body>
 </html>
+
+

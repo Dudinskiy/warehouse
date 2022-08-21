@@ -26,9 +26,9 @@ public class ProductsRestController {
     }
 
     @Secured({"ROLE_Кладовщик"})
-    @PostMapping(value = "/get-by-id")
-    public ProductsDtoRes getProductById(@RequestBody ProductsDto productsDto) {
-        return productsService.getProductById(productsDto);
+    @GetMapping(value = "/get-by-id/{id}")
+    public ProductsDtoRes getProductById(@PathVariable int id) {
+        return productsService.getProductById(id);
     }
 
     @Secured({"ROLE_Кладовщик"})
@@ -51,8 +51,8 @@ public class ProductsRestController {
     }
 
     @Secured({"ROLE_Кладовщик"})
-    @PostMapping(value = "/delete")
-    public boolean deleteProductById(@RequestBody ProductsDto productsDto) {
-        return productsService.deleteProductById(productsDto);
+    @DeleteMapping(value = "/delete/{id}")
+    public boolean deleteProductById(@PathVariable int id) {
+        return productsService.deleteProductById(id);
     }
 }

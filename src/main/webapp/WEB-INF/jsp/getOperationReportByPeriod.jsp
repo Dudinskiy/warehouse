@@ -1,16 +1,15 @@
 <%--
   Created by IntelliJ IDEA.
   User: Александр
-  Date: 31.07.2022
-  Time: 18:07
+  Date: 03.08.2022
+  Time: 22:55
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
-    <title>Страна</title>
+    <title>Отчет за день</title>
     <style>
         <%@ include file="css/style.css"%>
     </style>
@@ -37,6 +36,7 @@
 </header>
 
 <div id="container" style="width:100%">
+
     <div id="menu" style="background-color:#bebebe; height:100%; width:15%; float:left; ">
         <nav>
             <h2>Меню</h2>
@@ -66,19 +66,21 @@
 
     <div id="content" style="background-color:#d3d3d3; height:100%; width:85%; float:left;">
 
-        <h2>Добавить страну:</h2>
-        <form:form modelAttribute="countriesDto" action="/warehouse/countries/create" method="post">
-            <table>
-                <tr>
-                    <td>Введите наименование:</td>
-                    <td><form:input path="countryName"/></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><input type="submit" value="Сохранить"></td>
-                </tr>
-            </table>
-        </form:form>
+        <h3>Суммарная отчетность</h3>
+        <p>Начальная дата: ${operationReportDtoRes.start}</p>
+        <p>Конечная дата: ${operationReportDtoRes.end}</p>
+        <p>Количество операций: ${operationReportDtoRes.operationAmount}</p>
+        <p>Количество товаров: ${operationReportDtoRes.productAmount}</p>
+        <p>Суммарная стоимость товаров, грн: ${operationReportDtoRes.totalCost}</p>
+
+        <h3>Отчетность по операциям</h3>
+        <c:forEach var="operationReportDtoRes" items="${operationReportDtoRes.reportDtoResList}">
+            <p>Тип операции: ${operationReportDtoRes.typeName}</p>
+            <p>Количество операций: ${operationReportDtoRes.operationAmount}</p>
+            <p>Количество товаров: ${operationReportDtoRes.productAmount}</p>
+            <p>Суммарная стоимость товаров, грн: ${operationReportDtoRes.totalCost}</p>
+            <br>
+        </c:forEach>
 
     </div>
 </div>
@@ -91,3 +93,4 @@
 
 </body>
 </html>
+

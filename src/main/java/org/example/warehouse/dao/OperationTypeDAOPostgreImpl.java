@@ -1,5 +1,6 @@
 package org.example.warehouse.dao;
 
+import lombok.AllArgsConstructor;
 import org.example.warehouse.entities.OperationTypeEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,13 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
+@AllArgsConstructor
 public class OperationTypeDAOPostgreImpl implements OperationTypeDAO {
     private final DataSource dataSource;
     private static final Logger LOGGER = LoggerFactory.getLogger(OperationTypeDAOPostgreImpl.class);
-
-    public OperationTypeDAOPostgreImpl(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
 
     @Override
     public boolean createOperationType(String typeName) {
@@ -53,8 +51,9 @@ public class OperationTypeDAOPostgreImpl implements OperationTypeDAO {
             if (resultSet.next()) {
                 int typeId = resultSet.getInt("typeId");
                 String typeName = resultSet.getString("typeName");
+                String typeRes = resultSet.getString("type");
 
-                operationType = new OperationTypeEntity(1, typeId, typeName);
+                operationType = new OperationTypeEntity(1, typeId, typeName, typeRes);
             }
         } catch (SQLException e) {
             LOGGER.error("Error getting OperationType by id", e);
@@ -65,22 +64,23 @@ public class OperationTypeDAOPostgreImpl implements OperationTypeDAO {
     }
 
     @Override
-    public OperationTypeEntity getOperationTypeByName(String name) {
+    public OperationTypeEntity getOperationTypeByType(String type) {
         OperationTypeEntity operationType = null;
         ResultSet resultSet = null;
-        String query = "select * from lab2_da_operationType where typeName=?;";
+        String query = "select * from lab2_da_operationType where type=?;";
 
         try (PreparedStatement statement = dataSource.getConnection()
                 .prepareStatement(query)) {
 
-            statement.setString(1, name);
+            statement.setString(1, type);
             resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
                 int typeId = resultSet.getInt("typeId");
                 String typeName = resultSet.getString("typeName");
+                String typeRes = resultSet.getString("type");
 
-                operationType = new OperationTypeEntity(1, typeId, typeName);
+                operationType = new OperationTypeEntity(1, typeId, typeName, typeRes);
             }
         } catch (SQLException e) {
             LOGGER.error("Error getting OperationType by name", e);
@@ -96,7 +96,8 @@ public class OperationTypeDAOPostgreImpl implements OperationTypeDAO {
         String query = "select " +
                 "row_number() over(order by typeName) as rowNumber, " +
                 "typeId, " +
-                "typeName " +
+                "typeName, " +
+                "type " +
                 "from lab2_da_operationType;";
 
         try (Statement statement = dataSource.getConnection().createStatement();
@@ -105,9 +106,10 @@ public class OperationTypeDAOPostgreImpl implements OperationTypeDAO {
                 int rowNumber = resultSet.getInt("rowNumber");
                 int typeId = resultSet.getInt("typeId");
                 String typeName = resultSet.getString("typeName");
+                String typeRes = resultSet.getString("type");
 
                 OperationTypeEntity operationType = new OperationTypeEntity(rowNumber
-                        , typeId, typeName);
+                        , typeId, typeName, typeRes);
 
                 operationTypeList.add(operationType);
             }

@@ -15,6 +15,7 @@ public class OperationsDto {
     private List<OperationTypeDtoRes> operationTypeList;
     private List<ProductsFullDtoRes> allProducts;
     private String typeName;
+    private String type;
     private String invoiceNumber;
     private int productId;
     private int operationProdAmount;
@@ -25,4 +26,5 @@ public class OperationsDto {
     private LocalDate end;
     private String start1;
     private String end1;
+    private String login;
 }

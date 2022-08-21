@@ -29,8 +29,8 @@ public class UsersServiceImpl implements UsersService {
             return false;
         }
 
-        RolesEntity entity = rolesDAO.getRoleByName(usersFullDto.getRoleName());
-        System.out.println("usersFullDto.getRoleName(): " + usersFullDto.getRoleName());
+        RolesEntity entity = rolesDAO.getRoleByName(usersFullDto.getRole());
+        System.out.println("usersFullDto.getRoleName(): " + usersFullDto.getRole());
 
         if (entity != null) {
             System.out.println(entity.getRoleId());

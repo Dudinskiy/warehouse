@@ -5,7 +5,7 @@ import org.example.warehouse.entities.RolesEntity;
 import java.util.List;
 
 public interface RolesDAO {
-    RolesEntity getRoleByName(String roleName);
+    RolesEntity getRoleByName(String role);
 
     List<RolesEntity> getAllRoles();
 }

@@ -37,11 +37,11 @@ public class ProducersServiceImpl implements ProducersService {
     }
 
     @Override
-    public ProducersDtoRes getProducerById(ProducersDto producersDto) {
-        if (producersDto == null) {
+    public ProducersDtoRes getProducerById(int id) {
+        if (id == 0) {
             return null;
         }
-        ProducersEntity entity = producersDAO.getProducerById(producersDto.getProducerId());
+        ProducersEntity entity = producersDAO.getProducerById(id);
         ProducersDtoRes producersDtoRes = null;
         if (entity != null) {
             producersDtoRes = new ProducersDtoRes()
@@ -103,10 +103,10 @@ public class ProducersServiceImpl implements ProducersService {
     }
 
     @Override
-    public boolean deleteProducerById(ProducersDto producersDto) {
-        if (producersDto == null) {
+    public boolean deleteProducerById(int id) {
+        if (id == 0) {
             return false;
         }
-        return producersDAO.deleteProducerById(producersDto.getProducerId());
+        return producersDAO.deleteProducerById(id);
     }
 }

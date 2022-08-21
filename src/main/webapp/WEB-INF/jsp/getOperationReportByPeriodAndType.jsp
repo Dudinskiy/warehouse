@@ -41,6 +41,7 @@
         <nav>
             <h2>Меню</h2>
             <p><a href="/warehouse/operations/order-form">Создать список товаров</a></p>
+            <p><a href="/warehouse/operations/clean-order">Очистить список товаров</a></p>
             <p><a href="/warehouse/operations/operation-form">Создать товарную операцию</a></p>
             <p><a href="/warehouse/products/add">Внести товар в БД</a></p>
             <p><a href="/warehouse/producers/add">Внести производителя в БД</a></p>
@@ -59,26 +60,27 @@
             <p><a href="/warehouse/user/get-by-login-form">Посмотреть пользователя</a></p>
             <p><a href="/warehouse/user/get-all">Посмотреть всех пользователей</a></p>
             <p><a href="/warehouse/user/delete-by-login-form">Удалить пользователя</a></p>
+            <p><a href="/warehouse/reference">Справка</a></p>
         </nav>
     </div>
 
     <div id="content" style="background-color:#d3d3d3; height:100%; width:85%; float:left;">
 
-        <h2>Отчетность по операциям за период</h2>
-        <c:forEach var="operationReportDtoRes" items="${operationReportDtoRes.reportDtoResList}">
-            <p>Тип операции: ${operationReportDtoRes.typeName}</p>
-            <p>Количество операций: ${operationReportDtoRes.operationAmount}</p>
-            <p>Количество товаров: ${operationReportDtoRes.productAmount}</p>
-            <p>Суммарная стоимость товаров, грн: ${operationReportDtoRes.totalCost}</p>
-            <br>
-        </c:forEach>
+        <h3>Отчетность по операциям за период</h3>
+        <p>Тип операции: ${operationReportDtoRes.typeName}</p>
+        <p>Начальная дата: ${operationReportDtoRes.start}</p>
+        <p>Конечная дата: ${operationReportDtoRes.end}</p>
+        <p>Количество операций: ${operationReportDtoRes.operationAmount}</p>
+        <p>Количество товаров: ${operationReportDtoRes.productAmount}</p>
+        <p>Суммарная стоимость товаров, грн: ${operationReportDtoRes.totalCost}</p>
+        <br>
 
     </div>
 </div>
 
 <footer>
     <div id="footer" style="background-color:#778899; clear:both; text-align:center;">
-        © Uroki-HTML.ru
+        © Александр Дудинский
     </div>
 </footer>
 

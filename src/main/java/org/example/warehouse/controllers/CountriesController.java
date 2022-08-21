@@ -51,15 +51,15 @@ public class CountriesController {
         return modelAndView;
     }
 
-    @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
-    @PostMapping(value = "/get-by-id")
-    public ModelAndView getCountryById(@ModelAttribute CountriesDto countriesDto) {
-        ModelAndView modelAndView = new ModelAndView("getAllCountries");
-        List<CountriesDtoRes> countriesDtoResList = new ArrayList<>();
-        countriesDtoResList.add(countriesService.getCountryById(countriesDto));
-        modelAndView.addObject("countriesDtoResList", countriesDtoResList);
-        return modelAndView;
-    }
+//    @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
+//    @PostMapping(value = "/get-by-id")
+//    public ModelAndView getCountryById(@ModelAttribute CountriesDto countriesDto) {
+//        ModelAndView modelAndView = new ModelAndView("getAllCountries");
+//        List<CountriesDtoRes> countriesDtoResList = new ArrayList<>();
+//        countriesDtoResList.add(countriesService.getCountryById(countriesDto));
+//        modelAndView.addObject("countriesDtoResList", countriesDtoResList);
+//        return modelAndView;
+//    }
 
     @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
     @GetMapping(value = "/get-by-name-form")
@@ -79,7 +79,4 @@ public class CountriesController {
         return modelAndView;
     }
 
-    public ModelAndView deleteCountryById(CountriesDto countriesDto) {
-        return null;
-    }
 }

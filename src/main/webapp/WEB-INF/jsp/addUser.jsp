@@ -42,6 +42,7 @@
         <nav>
             <h2>Меню</h2>
             <p><a href="/warehouse/operations/order-form">Создать список товаров</a></p>
+            <p><a href="/warehouse/operations/clean-order">Очистить список товаров</a></p>
             <p><a href="/warehouse/operations/operation-form">Создать товарную операцию</a></p>
             <p><a href="/warehouse/products/add">Внести товар в БД</a></p>
             <p><a href="/warehouse/producers/add">Внести производителя в БД</a></p>
@@ -60,6 +61,7 @@
             <p><a href="/warehouse/user/get-by-login-form">Посмотреть пользователя</a></p>
             <p><a href="/warehouse/user/get-all">Посмотреть всех пользователей</a></p>
             <p><a href="/warehouse/user/delete-by-login-form">Удалить пользователя</a></p>
+            <p><a href="/warehouse/reference">Справка</a></p>
         </nav>
     </div>
 
@@ -70,11 +72,13 @@
             <table>
                 <tr>
                     <td>Введите имя:</td>
-                    <td><form:input path="firstName"/></td>
+                        <%--                    <td><form:input path="firstName"/></td>--%>
+                    <td><input name="firstName"/></td>
                 </tr>
                 <tr>
                     <td>Введите фамилию:</td>
-                    <td><form:input path="lastName"/></td>
+                        <%--                    <td><form:input path="lastName"/></td>--%>
+                    <td><input name="lastName"/></td>
                 </tr>
                 <tr>
                     <td>Введите логин:</td>
@@ -86,9 +90,9 @@
                 </tr>
                 <tr>
                     <td>Введите роль:</td>
-                    <td><form:select path="roleName">
+                    <td><form:select path="role">
                         <c:forEach var="RolesDtoRes" items="${usersFullDto.rolesList}">
-                            <form:option value="${RolesDtoRes.roleName}"></form:option>
+                            <form:option value="${RolesDtoRes.role}">${RolesDtoRes.roleName}</form:option>
                         </c:forEach>
                     </form:select></td>
                 </tr>
@@ -104,7 +108,7 @@
 
 <footer>
     <div id="footer" style="background-color:#778899; clear:both; text-align:center;">
-        © Uroki-HTML.ru
+        © Александр Дудинский
     </div>
 </footer>
 

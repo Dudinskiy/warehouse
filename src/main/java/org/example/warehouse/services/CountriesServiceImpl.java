@@ -29,11 +29,11 @@ public class CountriesServiceImpl implements CountriesService {
     }
 
     @Override
-    public CountriesDtoRes getCountryById(CountriesDto countriesDto) {
-        if (countriesDto == null) {
+    public CountriesDtoRes getCountryById(int id) {
+        if (id == 0) {
             return null;
         }
-        CountriesEntity country = countriesDAO.getCountryById(countriesDto.getCountryId());
+        CountriesEntity country = countriesDAO.getCountryById(id);
         CountriesDtoRes countriesDtoRes = null;
         if (country != null) {
             countriesDtoRes = new CountriesDtoRes()
@@ -75,10 +75,10 @@ public class CountriesServiceImpl implements CountriesService {
     }
 
     @Override
-    public boolean deleteCountryById(CountriesDto countriesDto) {
-        if (countriesDto == null) {
+    public boolean deleteCountryById(int id) {
+        if (id == 0) {
             return false;
         }
-        return countriesDAO.deleteCountryById(countriesDto.getCountryId());
+        return countriesDAO.deleteCountryById(id);
     }
 }

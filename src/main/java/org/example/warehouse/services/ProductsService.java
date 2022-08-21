@@ -10,7 +10,7 @@ import java.util.List;
 public interface ProductsService {
     boolean createProduct(ProductsDto productsDto);
 
-    ProductsDtoRes getProductById(ProductsDto productsDto);
+    ProductsDtoRes getProductById(int id);
 
     ProductsDtoRes getProductByName(ProductsDto productsDto);
 
@@ -20,5 +20,5 @@ public interface ProductsService {
 
     List<ProductsFullDtoRes> getAllProductFullByProducer(ProductsFullDto productsFullDto);
 
-    boolean deleteProductById(ProductsDto productsDto);
+    boolean deleteProductById(int id);
 }

@@ -11,7 +11,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class RolesServiceImpl implements RolesService{
+public class RolesServiceImpl implements RolesService {
 
     private final RolesDAO rolesDAO;
 
@@ -20,13 +20,14 @@ public class RolesServiceImpl implements RolesService{
         List<RolesDtoRes> rolesList = new ArrayList<>();
         List<RolesEntity> entityList = rolesDAO.getAllRoles();
 
-        if(!entityList.isEmpty()){
-           for(RolesEntity entity:entityList){
-               rolesList.add(new RolesDtoRes()
-                       .setRowNumber(entity.getRowNumber())
-                       .setRoleId(entity.getRoleId())
-                       .setRoleName(entity.getRoleName()));
-           }
+        if (!entityList.isEmpty()) {
+            for (RolesEntity entity : entityList) {
+                rolesList.add(new RolesDtoRes()
+                        .setRowNumber(entity.getRowNumber())
+                        .setRoleId(entity.getRoleId())
+                        .setRoleName(entity.getRoleName())
+                        .setRole(entity.getRole()));
+            }
         }
         return rolesList;
     }

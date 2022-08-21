@@ -8,11 +8,11 @@ import java.util.List;
 public interface OperationTypeService {
     boolean createOperationType(OperationTypeDto operationTypeDto);
 
-    OperationTypeDtoRes getOperationTypeById(OperationTypeDto operationTypeDto);
+    OperationTypeDtoRes getOperationTypeById(int id);
 
-    OperationTypeDtoRes getOperationTypeByName(OperationTypeDto operationTypeDto);
+    OperationTypeDtoRes getOperationTypeByType(OperationTypeDto operationTypeDto);
 
     List<OperationTypeDtoRes> getAllOperationType();
 
-    boolean deleteOperationTypeById(OperationTypeDto operationTypeDto);
+    boolean deleteOperationTypeById(int id);
 }

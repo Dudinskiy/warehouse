@@ -11,4 +11,5 @@ public class RolesEntity {
     private int rowNumber;
     private int roleId;
     private String roleName;
+    private String role;
 }

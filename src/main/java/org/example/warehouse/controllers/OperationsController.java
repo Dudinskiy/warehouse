@@ -2,10 +2,7 @@ package org.example.warehouse.controllers;
 
 import lombok.AllArgsConstructor;
 import org.example.warehouse.dto.*;
-import org.example.warehouse.services.OperationTypeService;
-import org.example.warehouse.services.OperationsService;
-import org.example.warehouse.services.ProducersService;
-import org.example.warehouse.services.ProductsService;
+import org.example.warehouse.services.*;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -24,17 +21,14 @@ public class OperationsController {
     private final ProductsService productsService;
     private final ProducersService producersService;
     private List<ProductOrderDto> productOrderDtoList;
-    private List<ProductsFullDtoRes> allProducts;
 
     @Secured("ROLE_Кладовщик")
     @GetMapping(value = "/order-form")
     public ModelAndView addProductOrderForm() {
         ModelAndView modelAndView = new ModelAndView("addProductOrderForm");
         OperationsDto operationsDto = new OperationsDto();
-        allProducts = productsService.getAllProductsFull();
         List<ProducersFullDtoRes> allProducers = producersService.getAllProducerFull();
         operationsDto.setAllProducers(allProducers);
-        operationsDto.setAllProducts(allProducts);
         operationsDto.setProductList(productOrderDtoList);
         modelAndView.addObject("operationsDto", operationsDto);
         return modelAndView;
@@ -44,12 +38,14 @@ public class OperationsController {
     @PostMapping(value = "/add-order")
     public ModelAndView addProductOrder(@ModelAttribute OperationsDto operationsDto) {
         ModelAndView modelAndView = new ModelAndView("redirect:/operations/order-form");
+        System.out.println("CONTROLLER addProductOrder(), operationsDto:" + operationsDto);
 
         ProductsFullDto productsFullDto = new ProductsFullDto()
                 .setProductName(operationsDto.getProductName())
                 .setProducerName(operationsDto.getProducerName());
 
         ProductsFullDtoRes productsFullDtoRes = productsService.getProductByNameFull(productsFullDto);
+        System.out.println("CONTROLLER addProductOrder(), productsFullDtoRes:" + productsFullDtoRes);
 
         ProductOrderDto productOrderDto = new ProductOrderDto();
         productOrderDto.setProductId(productsFullDtoRes.getProductId())
@@ -86,12 +82,22 @@ public class OperationsController {
     }
 
     @Secured("ROLE_Кладовщик")
+    @GetMapping(value = "/clean-order")
+    public ModelAndView cleanProductOrder() {
+        productOrderDtoList.clear();
+        return new ModelAndView("redirect:/operations/order-form");
+    }
+
+    @Secured("ROLE_Кладовщик")
     @GetMapping(value = "/operation-form")
     public ModelAndView createOperationForm() {
         ModelAndView modelAndView = new ModelAndView("addOperation");
         OperationsDto operationsDto = new OperationsDto();
         operationsDto.setProductList(productOrderDtoList);
+
         List<OperationTypeDtoRes> operationTypeDtoResList = operationTypeService.getAllOperationType();
+        System.out.println("!!!CONTROLLER createOperationForm(), operationTypeDtoResList: " + operationTypeDtoResList);
+
         operationsDto.setOperationTypeList(operationTypeDtoResList);
         modelAndView.addObject("operationsDto", operationsDto);
         return modelAndView;
@@ -101,6 +107,8 @@ public class OperationsController {
     @PostMapping(value = "/create")
     public ModelAndView createOperation(@ModelAttribute OperationsDto operationsDto) {
         ModelAndView modelAndView = new ModelAndView("getOperationRes");
+        System.out.println("CONTROLLER createOperation: " + operationsDto);
+
         operationsDto.setProductList(productOrderDtoList);
         operationsService.createOperation(operationsDto);
         List<OperationsFullDtoRes> operationList = operationsService
@@ -157,7 +165,9 @@ public class OperationsController {
         System.out.println(operationsDto);
         OperationReportDtoRes operationReportDtoRes = operationsService
                 .getOperationReportByPeriod(operationsDto);
-        ModelAndView modelAndView = new ModelAndView("getOperationReportByDay");
+        operationReportDtoRes.setStart(start);
+        operationReportDtoRes.setEnd(end);
+        ModelAndView modelAndView = new ModelAndView("getOperationReportByPeriod");
         modelAndView.addObject("operationReportDtoRes", operationReportDtoRes);
         return modelAndView;
     }
@@ -176,6 +186,8 @@ public class OperationsController {
     @Secured("ROLE_Кладовщик")
     @PostMapping(value = "/report-by-day-type")
     public ModelAndView getOperationReportByDayAndType(@ModelAttribute OperationsDto operationsDto) {
+        System.out.println("!!!CONTROLLER getOperationReportByDayAndType(), operationsDto: " + operationsDto);
+
         OperationReportDtoRes operationReportDtoRes = operationsService
                 .getOperationReportByDayAndTypeFull(operationsDto);
         ModelAndView modelAndView = new ModelAndView("getOperationReportByDayAndType");
@@ -204,9 +216,10 @@ public class OperationsController {
         System.out.println(operationsDto);
         OperationReportDtoRes operationReportDtoRes = operationsService
                 .getOperationReportByPeriodAndTypeFull(operationsDto);
+        operationReportDtoRes.setStart(start);
+        operationReportDtoRes.setEnd(end);
         ModelAndView modelAndView = new ModelAndView("getOperationReportByPeriodAndType");
         modelAndView.addObject("operationReportDtoRes", operationReportDtoRes);
         return modelAndView;
     }
-
 }

@@ -8,7 +8,7 @@ import java.util.List;
 
 
 public interface OperationsDAO {
-    boolean createOperation(int typeId, String invoice);
+    boolean createOperation(int typeId, String invoice, int userId);
 
     OperationsEntity getOperationById(int id);
 

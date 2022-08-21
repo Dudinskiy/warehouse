@@ -26,8 +26,9 @@ public class OperationsDAOPostgreImpl implements OperationsDAO {
     }
 
     @Override
-    public boolean createOperation(int typeId, String invoice) {
-        String query = "insert into lab2_da_operations (operationDate, typeId, invoiceNumber) values(?, ?, ?);";
+    public boolean createOperation(int typeId, String invoice, int userId) {
+        String query = "insert into lab2_da_operations (operationDate, typeId, invoiceNumber, userId) " +
+                "values(?, ?, ?, ?);";
 
         try (PreparedStatement statement = dataSource.getConnection()
                 .prepareStatement(query)) {
@@ -35,9 +36,10 @@ public class OperationsDAOPostgreImpl implements OperationsDAO {
             statement.setObject(1, LocalDateTime.now());
             statement.setInt(2, typeId);
             statement.setString(3, invoice);
+            statement.setInt(4, userId);
             statement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error("Error creating Operation",e);
+            LOGGER.error("Error creating Operation", e);
             return false;
         }
         return true;
@@ -112,6 +114,7 @@ public class OperationsDAOPostgreImpl implements OperationsDAO {
         String query = "select op.operationid as operationid, " +
                 "op.operationdate as operationdate, " +
                 "ot.typename as typename, " +
+                "ot.type as type, " +
                 "op.invoicenumber as invoicenumber, " +
                 "prt.productid as productid, " +
                 "prt.productname as productname, " +
@@ -143,6 +146,7 @@ public class OperationsDAOPostgreImpl implements OperationsDAO {
                 LocalDateTime operationDate = resultSet
                         .getObject("operationDate", LocalDateTime.class);
                 String typeName = resultSet.getString("typeName");
+                String type = resultSet.getString("type");
                 String invoiceNumber = resultSet.getString("invoiceNumber");
                 int productId = resultSet.getInt("productId");
                 String productName = resultSet.getString("productName");
@@ -155,14 +159,14 @@ public class OperationsDAOPostgreImpl implements OperationsDAO {
                 String lastName = resultSet.getString("lastName");
 
                 OperationsEntityFull operation = new OperationsEntityFull(1, operationId,
-                        operationDate, typeName, invoiceNumber, productId,
+                        operationDate, typeName, type, invoiceNumber, productId,
                         productName, price, productAmount, producerName
                         , countryName, userId, firstName, lastName);
 
                 entityList.add(operation);
             }
         } catch (SQLException e) {
-           LOGGER.error("Error getting OperationFull by invoice", e);
+            LOGGER.error("Error getting OperationFull by invoice", e);
         } finally {
             JdbcUtil.free(resultSet);
         }
@@ -174,17 +178,18 @@ public class OperationsDAOPostgreImpl implements OperationsDAO {
         List<OperationsEntityFull> entityList = new ArrayList<>();
         ResultSet resultSet = null;
         String query = "Select " +
-                "row_number() over (order by op.operationdate) as rowNumber" +
+                "row_number() over (order by op.operationdate) as rowNumber," +
                 "op.operationid as operationid, " +
                 "date_trunc('second', op.operationdate) as operationdate, " +
                 "ot.typename as typename, " +
+                "ot.type as type, " +
                 "op.invoicenumber, " +
                 "prt.productid as productid, " +
                 "prt.productname as productname, " +
                 "oi.productamount as productamount, " +
                 "prc.producername as producername, " +
                 "prt.price as price," +
-                "cnt.countryname as countryname " +
+                "cnt.countryname as countryname, " +
                 "op.userid as userid, " +
                 "usr.firstname as firstname, " +
                 "usr.lastname as lastname " +
@@ -211,6 +216,7 @@ public class OperationsDAOPostgreImpl implements OperationsDAO {
                 LocalDateTime operationDate = resultSet
                         .getObject("operationDate", LocalDateTime.class);
                 String typeName = resultSet.getString("typeName");
+                String type = resultSet.getString("type");
                 String invoiceNumber = resultSet.getString("invoiceNumber");
                 int productId = resultSet.getInt("productId");
                 String productName = resultSet.getString("productName");
@@ -223,7 +229,7 @@ public class OperationsDAOPostgreImpl implements OperationsDAO {
                 String lastName = resultSet.getString("lastName");
 
                 OperationsEntityFull operation = new OperationsEntityFull(rowNumber, operationId,
-                        operationDate, typeName, invoiceNumber, productId,
+                        operationDate, typeName, type, invoiceNumber, productId,
                         productName, price, productAmount, producerName
                         , countryName, userId, firstName, lastName);
 
@@ -243,17 +249,18 @@ public class OperationsDAOPostgreImpl implements OperationsDAO {
         List<OperationsEntityFull> entityList = new ArrayList<>();
         ResultSet resultSet = null;
         String query = "Select " +
-                "row_number() over (order by op.operationdate;) as rowNumber" +
+                "row_number() over (order by op.operationdate) as rowNumber," +
                 "op.operationid as operationid, " +
                 "date_trunc('second', op.operationdate) as operationdate, " +
                 "ot.typename as typename, " +
+                "ot.type as type, " +
                 "op.invoicenumber, " +
                 "prt.productid as productid, " +
                 "prt.productname as productname, " +
-                "prt.price as price," +
+                "prt.price as price, " +
                 "oi.productamount as productamount, " +
                 "prc.producername as producername, " +
-                "cnt.countryname as countryname " +
+                "cnt.countryname as countryname, " +
                 "op.userid as userid, " +
                 "usr.firstname as firstname, " +
                 "usr.lastname as lastname " +
@@ -266,7 +273,7 @@ public class OperationsDAOPostgreImpl implements OperationsDAO {
                 "join lab2_da_users usr on op.userid=usr.userid " +
                 "where date_trunc('day', operationdate)>=? " +
                 "and date_trunc('day', operationdate)<=?  " +
-                "and ot.typename=?;";
+                "and ot.type=?;";
 
         try (PreparedStatement statement = dataSource.getConnection()
                 .prepareStatement(query)) {
@@ -282,6 +289,7 @@ public class OperationsDAOPostgreImpl implements OperationsDAO {
                 LocalDateTime operationDate = resultSet
                         .getObject("operationDate", LocalDateTime.class);
                 String typeName = resultSet.getString("typeName");
+                String typeRes = resultSet.getString("type");
                 String invoiceNumber = resultSet.getString("invoiceNumber");
                 int productId = resultSet.getInt("productId");
                 String productName = resultSet.getString("productName");
@@ -294,7 +302,7 @@ public class OperationsDAOPostgreImpl implements OperationsDAO {
                 String lastName = resultSet.getString("lastName");
 
                 OperationsEntityFull operation = new OperationsEntityFull(rowNumber, operationId,
-                        operationDate, typeName, invoiceNumber, productId,
+                        operationDate, typeName, typeRes, invoiceNumber, productId,
                         productName, price, productAmount, producerName
                         , countryName, userId, firstName, lastName);
 

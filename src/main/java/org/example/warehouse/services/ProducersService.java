@@ -10,7 +10,7 @@ import java.util.List;
 public interface ProducersService {
     boolean createProducer(ProducersDto producersDto);
 
-    ProducersDtoRes getProducerById(ProducersDto producersDto);
+    ProducersDtoRes getProducerById(int id);
 
     ProducersDtoRes getProducerByName(ProducersDto producersDto);
 
@@ -18,5 +18,5 @@ public interface ProducersService {
 
     List<ProducersFullDtoRes> getAllProducerFull();
 
-    boolean deleteProducerById(ProducersDto producersDto);
+    boolean deleteProducerById(int id);
 }

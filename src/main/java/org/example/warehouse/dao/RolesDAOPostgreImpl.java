@@ -21,29 +21,30 @@ public class RolesDAOPostgreImpl implements RolesDAO {
     private static final Logger LOGGER = LoggerFactory.getLogger(RolesDAOPostgreImpl.class);
 
     @Override
-    public RolesEntity getRoleByName(String roleName) {
-        String query = "Select * from lab2_da_roles where roleName=?;";
+    public RolesEntity getRoleByName(String role) {
+        String query = "Select * from lab2_da_roles where role=?;";
         ResultSet resultSet = null;
-        RolesEntity role = null;
+        RolesEntity roleEntity = null;
 
         try (PreparedStatement statement = dataSource.getConnection()
                 .prepareStatement(query)) {
 
-            statement.setString(1, roleName);
+            statement.setString(1, role);
             resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
                 int roleId = resultSet.getInt("roleId");
                 String roleNameRes = resultSet.getString("roleName");
+                String roleRes = resultSet.getString("role");
 
-                role = new RolesEntity(1, roleId, roleNameRes);
+                roleEntity = new RolesEntity(1, roleId, roleNameRes, roleRes);
             }
         } catch (SQLException e) {
            LOGGER.error("Error getting Role by name", e);
         } finally {
             JdbcUtil.free(resultSet);
         }
-        return role;
+        return roleEntity;
     }
 
     @Override
@@ -51,7 +52,9 @@ public class RolesDAOPostgreImpl implements RolesDAO {
         String query = "Select " +
                 "row_number() over(order by roleName) as rowNumber, " +
                 "roleId, " +
-                "roleName from lab2_da_roles;";
+                "roleName, " +
+                "role " +
+                "from lab2_da_roles;";
 
         List<RolesEntity> roleList = new ArrayList<>();
 
@@ -63,8 +66,9 @@ public class RolesDAOPostgreImpl implements RolesDAO {
                 int rowNumber = resultSet.getInt("rowNumber");
                 int roleId = resultSet.getInt("roleId");
                 String roleName = resultSet.getString("roleName");
+                String roleRes = resultSet.getString("role");
 
-                roleList.add(new RolesEntity(rowNumber, roleId, roleName));
+                roleList.add(new RolesEntity(rowNumber, roleId, roleName, roleRes));
             }
         } catch (SQLException e) {
             LOGGER.error("Error getting all Roles", e);

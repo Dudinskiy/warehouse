@@ -2,14 +2,13 @@ package org.example.warehouse.services;
 
 import lombok.AllArgsConstructor;
 import org.example.warehouse.config.AppConstants;
-import org.example.warehouse.dao.OperationInfoDAO;
-import org.example.warehouse.dao.OperationTypeDAO;
-import org.example.warehouse.dao.OperationsDAO;
-import org.example.warehouse.dao.ProductsDAO;
+import org.example.warehouse.dao.*;
 import org.example.warehouse.dto.*;
 import org.example.warehouse.entities.OperationTypeEntity;
 import org.example.warehouse.entities.OperationsEntity;
 import org.example.warehouse.entities.OperationsEntityFull;
+import org.example.warehouse.entities.UsersEntityFull;
+import org.example.warehouse.exceptions.OperationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,25 +26,38 @@ public class OperationsServiceImpl implements OperationsService {
     private final OperationTypeDAO operationTypeDAO;
     private final OperationInfoDAO operationInfoDAO;
     private final ProductsDAO productsDAO;
+    private final UsersDAO usersDAO;
 
     @Override
     @Transactional
     public boolean createOperation(OperationsDto operationsDto) {
         if (operationsDto == null) {
+            System.out.println("If_1 createOperation: operationsDto is null");
             return false;
         }
+        System.out.println("INPUT DATE for createOperation: " + operationsDto);
         //Получение типа операции из БД
         OperationTypeEntity typeEntity = operationTypeDAO
-                .getOperationTypeByName(operationsDto.getTypeName());
+                .getOperationTypeByType(operationsDto.getType());
         if (typeEntity == null) {
-            System.out.println(operationsDto);
+            System.out.println("If_2 createOperation: typeEntity is null");
             return false;
         }
+
+        //Получение пользователя
+        UsersEntityFull user = usersDAO.getUserByLogin(operationsDto.getLogin());
+        if (user == null) {
+            System.out.println("If_3 createOperation: User is null");
+            return false;
+        }
+
         //Сохранение пустой операции в БД для получения ее id
-        operationsDAO.createOperation(typeEntity.getTypeId(), operationsDto.getInvoiceNumber());
+        operationsDAO.createOperation(typeEntity.getTypeId()
+                , operationsDto.getInvoiceNumber(), user.getUserId());
         OperationsEntity operationsEntity = operationsDAO
                 .getOperationByInvoice(operationsDto.getInvoiceNumber());
         if (operationsEntity == null) {
+            System.out.println("If_4 createOperation: operationsEntity is null");
             return false;
         }
         //Определение какой тип операции
@@ -64,6 +76,11 @@ public class OperationsServiceImpl implements OperationsService {
             }
         } else {
             for (ProductOrderDto order : operationsDto.getProductList()) {
+                //Проверка достаточности товара на складе для проведения операции
+                if (order.getCurrentProdAmount() < order.getOperationProdAmount()) {
+                    throw new OperationException("Недостаточное количество товара "
+                            + order.getProductName());
+                }
                 //Изменение количества товара
                 newProductAmount = order.getCurrentProdAmount() - order.getOperationProdAmount();
                 productsDAO.updateProductAmountById(order.getProductId(), newProductAmount);
@@ -78,11 +95,11 @@ public class OperationsServiceImpl implements OperationsService {
     }
 
     @Override
-    public OperationsDtoRes getOperationById(OperationsDto operationsDto) {
-        if (operationsDto == null) {
+    public OperationsDtoRes getOperationById(int id) {
+        if (id == 0) {
             return null;
         }
-        OperationsEntity entity = operationsDAO.getOperationById(operationsDto.getOperationId());
+        OperationsEntity entity = operationsDAO.getOperationById(id);
         OperationsDtoRes operationsDtoRes = null;
         if (entity != null) {
             operationsDtoRes = new OperationsDtoRes()
@@ -131,7 +148,10 @@ public class OperationsServiceImpl implements OperationsService {
                         .setProductName(entity.getProductName())
                         .setProductAmount(entity.getProductAmount())
                         .setProducerName(entity.getProducerName())
-                        .setCountryName(entity.getCountryName());
+                        .setCountryName(entity.getCountryName())
+                        .setUserId(entity.getUserId())
+                        .setFirstName(entity.getFirstName())
+                        .setLastName(entity.getLastName());
 
                 resultList.add(operation);
             }
@@ -339,7 +359,9 @@ public class OperationsServiceImpl implements OperationsService {
 
         List<OperationsEntityFull> entityList = operationsDAO
                 .getAllOperationByPeriodAndTypeFull(LocalDate.now(), LocalDate.now()
-                        , operationsDto.getTypeName());
+                        , operationsDto.getType());
+
+        System.out.println("!!!SERVICE getOperationReportByDayAndTypeFull(), entityList: " + entityList);
 
         Set<String> invoices = new HashSet<>();
         BigDecimal totalPrice = new BigDecimal(0);
@@ -347,7 +369,7 @@ public class OperationsServiceImpl implements OperationsService {
         List<OperationsEntityFull> operationList = new ArrayList<>();
 
         for (OperationsEntityFull entity : entityList) {
-            if (operationsDto.getTypeName().equals(entity.getTypeName())) {
+            if (operationsDto.getType().equals(entity.getType())) {
                 operationList.add(entity);
             }
         }
@@ -360,12 +382,14 @@ public class OperationsServiceImpl implements OperationsService {
         }
 
         result = new OperationReportDtoRes()
-                .setTypeName(operationsDto.getTypeName())
+                .setTypeName(getTypeName(operationsDto.getType()))
                 .setOperationAmount(invoices.size())
                 .setProductAmount(totalAmount)
                 .setTotalCost(totalPrice);
 
         result.setReportDtoResList(reportDtoResList);
+
+        System.out.println("!!!SERVICE getOperationReportByDayAndTypeFull(), result: " + result);
 
         return result;
     }
@@ -377,7 +401,7 @@ public class OperationsServiceImpl implements OperationsService {
 
         List<OperationsEntityFull> entityList = operationsDAO
                 .getAllOperationByPeriodAndTypeFull(operationsDto.getStart(), operationsDto.getEnd()
-                        , operationsDto.getTypeName());
+                        , operationsDto.getType());
 
         Set<String> invoices = new HashSet<>();
         BigDecimal totalPrice = new BigDecimal(0);
@@ -385,7 +409,7 @@ public class OperationsServiceImpl implements OperationsService {
         List<OperationsEntityFull> operationList = new ArrayList<>();
 
         for (OperationsEntityFull entity : entityList) {
-            if (operationsDto.getTypeName().equals(entity.getTypeName())) {
+            if (operationsDto.getType().equals(entity.getType())) {
                 operationList.add(entity);
             }
         }
@@ -398,7 +422,7 @@ public class OperationsServiceImpl implements OperationsService {
         }
 
         result = new OperationReportDtoRes()
-                .setTypeName(operationsDto.getTypeName())
+                .setTypeName(getTypeName(operationsDto.getType()))
                 .setOperationAmount(invoices.size())
                 .setProductAmount(totalAmount)
                 .setTotalCost(totalPrice);
@@ -409,10 +433,22 @@ public class OperationsServiceImpl implements OperationsService {
     }
 
     @Override
-    public boolean deleteOperationById(OperationsDto operationsDto) {
-        if (operationsDto == null) {
+    public boolean deleteOperationById(int id) {
+        if (id == 0) {
             return false;
         }
-        return operationsDAO.deleteOperationById(operationsDto.getOperationId());
+        return operationsDAO.deleteOperationById(id);
+    }
+
+    private String getTypeName(String type) {
+        if (AppConstants.RECEPTION_TYPE_ENG.equals(type)) {
+            return AppConstants.RECEPTION_TYPE;
+        } else if (AppConstants.SHIPMENT_TYPE_ENG.equals(type)) {
+            return AppConstants.SHIPMENT_TYPE;
+        } else if (AppConstants.WRITE_OFF_TYPE_ENG.equals(type)) {
+            return AppConstants.WRITE_OFF_TYPE;
+        } else {
+            return null;
+        }
     }
 }

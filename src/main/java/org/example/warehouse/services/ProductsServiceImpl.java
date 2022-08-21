@@ -38,11 +38,11 @@ public class ProductsServiceImpl implements ProductsService {
     }
 
     @Override
-    public ProductsDtoRes getProductById(ProductsDto productsDto) {
-        if (productsDto == null) {
+    public ProductsDtoRes getProductById(int id) {
+        if (id == 0) {
             return null;
         }
-        ProductsEntity entity = productsDAO.getProductById(productsDto.getProductId());
+        ProductsEntity entity = productsDAO.getProductById(id);
         ProductsDtoRes productsDtoRes = null;
         if (entity != null) {
             productsDtoRes = new ProductsDtoRes()
@@ -139,10 +139,10 @@ public class ProductsServiceImpl implements ProductsService {
     }
 
     @Override
-    public boolean deleteProductById(ProductsDto productsDto) {
-        if (productsDto == null) {
+    public boolean deleteProductById(int id) {
+        if (id == 0) {
             return false;
         }
-        return productsDAO.deleteProductById(productsDto.getProductId());
+        return productsDAO.deleteProductById(id);
     }
 }

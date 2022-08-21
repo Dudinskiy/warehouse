@@ -8,11 +8,11 @@ import java.util.List;
 public interface CountriesService {
     boolean createCountry(CountriesDto countriesDto);
 
-    CountriesDtoRes getCountryById(CountriesDto countriesDto);
+    CountriesDtoRes getCountryById(int id);
 
     CountriesDtoRes getCountryByName(CountriesDto countriesDto);
 
     List<CountriesDtoRes> getAllCountries();
 
-    boolean deleteCountryById(CountriesDto countriesDto);
+    boolean deleteCountryById(int id);
 }
