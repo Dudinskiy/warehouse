@@ -5,9 +5,11 @@
   Time: 17:14
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<fmt:requestEncoding value="utf-8"/>
 
 <html>
 <head>
@@ -17,6 +19,7 @@
     </style>
     <meta name="_csrf" content="${_csrf.token}"/>
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
+    <meta content="text/html" charset="UTF-8"/>
 </head>
 
 <body>
@@ -40,7 +43,7 @@
 </header>
 
 <div id="container" style="width:100%;">
-    <div id="menu" style="background-color:#bebebe; height:100%; width:15%; float:left; ">
+    <div class="menuBody" class="menuBody" id="menu" style="height:100%; width:15%; float:left; ">
         <nav>
             <h2>Меню</h2>
             <p><a href="/warehouse/operations/order-form">Создать список товаров</a></p>
@@ -67,11 +70,12 @@
         </nav>
     </div>
 
-    <div id="content" style="background-color:#d3d3d3; height:100%; width:85%; float:left;">
+    <div class="mainBody" id="content" style="height:100%; width:85%; float:left;">
 
         <h3>Добавить товар:</h3>
 
-        <form:form modelAttribute="operationsDto" action="/warehouse/operations/add-order" method="post">
+        <form:form modelAttribute="operationsDto" action="/warehouse/operations/add-order" method="post"
+                   enctype="application/x-www-form-urlencoded">
             <table>
                 <tr>
                     <td>Производитель:</td>
@@ -138,12 +142,12 @@
 
         xhttp.onload = function () {
             if (xhttp.status == 200) {
-                let producersFullDtoResList = JSON.parse(xhttp.response);
+                let ProductsFullDtoResList = JSON.parse(xhttp.response);
                 let html = '<option value="">Товар не выбран</option>';
-
-                for (let i = 0; i < producersFullDtoResList.length; i++) {
-                    html = html + '<option value="' + producersFullDtoResList[i].productName + '">'
-                        + producersFullDtoResList[i].productName + '</option>'
+                console.log(ProductsFullDtoResList);
+                for (let i = 0; i < ProductsFullDtoResList.length; i++) {
+                    html = html + '<option value="' + ProductsFullDtoResList[i].productName + '">'
+                        + ProductsFullDtoResList[i].productName + '</option>'
                 }
                 document.getElementById("products").innerHTML = html;
             }
@@ -163,7 +167,7 @@
 </script>
 
 <footer>
-    <div id="footer" style="background-color:#778899; clear:both; text-align:center;">
+    <div id="footer" style="clear:both; text-align:center;">
         © Александр Дудинский
     </div>
 </footer>

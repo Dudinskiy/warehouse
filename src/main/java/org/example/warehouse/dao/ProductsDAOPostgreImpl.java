@@ -163,6 +163,90 @@ public class ProductsDAOPostgreImpl implements ProductsDAO {
     }
 
     @Override
+    public ProductsEntityFull getProductByNameAndProducerFull(String name, String producer) {
+        ProductsEntityFull product = null;
+        ResultSet resultSet = null;
+        String query = "select " +
+                "prt.productid as productid," +
+                "prt.productname as productname, " +
+                "prc.producername as producername, " +
+                "cnt.countryname as countryname, " +
+                "prt.price as price, " +
+                "prt.productamount as productamount " +
+                "from lab2_da_products prt " +
+                "join lab2_da_producers prc on prt.producerid=prc.producerid " +
+                "join lab2_da_countries cnt on prc.countryid=cnt.countryid " +
+                "where prt.productname=? " +
+                "and prc.producername=?;";
+
+        try (PreparedStatement statement = dataSource.getConnection()
+                .prepareStatement(query)) {
+
+            statement.setString(1, name);
+            statement.setString(2, producer);
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                int productId = resultSet.getInt("productId");
+                String productName = resultSet.getString("productName");
+                String producerName = resultSet.getString("producerName");
+                String countryName = resultSet.getString("countryName");
+                BigDecimal price = resultSet.getBigDecimal("price");
+                int productAmount = resultSet.getInt("productAmount");
+
+                product = new ProductsEntityFull(1, productId, productName
+                        , producerName, countryName, price, productAmount);
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Error getting ProductFull by name", e);
+        } finally {
+            JdbcUtil.free(resultSet);
+        }
+        return product;
+    }
+
+    @Override
+    public ProductsEntityFull getProductByIdFull(int id) {
+        ProductsEntityFull product = null;
+        ResultSet resultSet = null;
+        String query = "select " +
+                "prt.productid as productid," +
+                "prt.productname as productname, " +
+                "prc.producername as producername, " +
+                "cnt.countryname as countryname, " +
+                "prt.price as price, " +
+                "prt.productamount as productamount " +
+                "from lab2_da_products prt " +
+                "join lab2_da_producers prc on prt.producerid=prc.producerid " +
+                "join lab2_da_countries cnt on prc.countryid=cnt.countryid " +
+                "where prt.productid=?;";
+
+        try (PreparedStatement statement = dataSource.getConnection()
+                .prepareStatement(query)) {
+
+            statement.setInt(1, id);
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                int productId = resultSet.getInt("productId");
+                String productName = resultSet.getString("productName");
+                String producerName = resultSet.getString("producerName");
+                String countryName = resultSet.getString("countryName");
+                BigDecimal price = resultSet.getBigDecimal("price");
+                int productAmount = resultSet.getInt("productAmount");
+
+                product = new ProductsEntityFull(1, productId, productName
+                        , producerName, countryName, price, productAmount);
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Error getting ProductFull by name", e);
+        } finally {
+            JdbcUtil.free(resultSet);
+        }
+        return product;
+    }
+
+    @Override
     public List<ProductsEntityFull> getAllProductFull() {
         List<ProductsEntityFull> productList = new ArrayList<>();
         String query = "select " +

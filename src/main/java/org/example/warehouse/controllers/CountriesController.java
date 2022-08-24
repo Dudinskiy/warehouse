@@ -22,7 +22,7 @@ public class CountriesController {
     private final CountriesService countriesService;
 
 
-    @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
+    @Secured({"ROLE_Кладовщик"})
     @GetMapping(value = "/add")
     public ModelAndView addCountry() {
         ModelAndView modelAndView = new ModelAndView("addCountry");
@@ -30,7 +30,7 @@ public class CountriesController {
         return modelAndView;
     }
 
-    @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
+    @Secured({"ROLE_Кладовщик"})
     @PostMapping(value = "/create")
     public ModelAndView createCountry(@ModelAttribute CountriesDto countriesDto) {
         String response;
@@ -42,7 +42,7 @@ public class CountriesController {
         return new ModelAndView("addCountryRes", "response", response);
     }
 
-    @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
+    @Secured({"ROLE_Кладовщик"})
     @GetMapping(value = "/get-all")
     public ModelAndView getAllCountries() {
         ModelAndView modelAndView = new ModelAndView("getAllCountries");
@@ -51,17 +51,7 @@ public class CountriesController {
         return modelAndView;
     }
 
-//    @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
-//    @PostMapping(value = "/get-by-id")
-//    public ModelAndView getCountryById(@ModelAttribute CountriesDto countriesDto) {
-//        ModelAndView modelAndView = new ModelAndView("getAllCountries");
-//        List<CountriesDtoRes> countriesDtoResList = new ArrayList<>();
-//        countriesDtoResList.add(countriesService.getCountryById(countriesDto));
-//        modelAndView.addObject("countriesDtoResList", countriesDtoResList);
-//        return modelAndView;
-//    }
-
-    @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
+    @Secured({"ROLE_Кладовщик"})
     @GetMapping(value = "/get-by-name-form")
     public ModelAndView getCountryByNameForm() {
         ModelAndView modelAndView = new ModelAndView("getCountryByNameForm");
@@ -69,7 +59,7 @@ public class CountriesController {
         return modelAndView;
     }
 
-    @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
+    @Secured({"ROLE_Кладовщик"})
     @PostMapping(value = "/get-by-name")
     public ModelAndView getCountryByName(@ModelAttribute CountriesDto countriesDto) {
         ModelAndView modelAndView = new ModelAndView("getAllCountries");

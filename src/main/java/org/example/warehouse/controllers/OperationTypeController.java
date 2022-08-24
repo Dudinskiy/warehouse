@@ -18,7 +18,7 @@ import java.util.List;
 public class OperationTypeController {
     private final OperationTypeService operationTypeService;
 
-    @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
+    @Secured({"ROLE_Кладовщик"})
     @GetMapping(value = "/add")
     public ModelAndView addOperationType() {
         ModelAndView modelAndView = new ModelAndView("addOperationType");
@@ -26,7 +26,7 @@ public class OperationTypeController {
         return modelAndView;
     }
 
-    @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
+    @Secured({"ROLE_Кладовщик"})
     @PostMapping(value = "/create")
     public ModelAndView createOperationType(@ModelAttribute OperationTypeDto operationTypeDto) {
         String response;
@@ -38,7 +38,7 @@ public class OperationTypeController {
         return new ModelAndView("addOperationTypeRes", "response", response);
     }
 
-    @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
+    @Secured({"ROLE_Кладовщик"})
     @GetMapping(value = "/get-all")
     public ModelAndView getAllOperationType() {
         ModelAndView modelAndView = new ModelAndView("getAllOperationType");
@@ -47,7 +47,7 @@ public class OperationTypeController {
         return modelAndView;
     }
 
-    @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
+    @Secured({"ROLE_Кладовщик"})
     @GetMapping(value = "/get-by-id/{id}")
     public ModelAndView getOperationTypeById(@PathVariable int id) {
         ModelAndView modelAndView = new ModelAndView("getAllOperationType");
@@ -57,7 +57,7 @@ public class OperationTypeController {
         return modelAndView;
     }
 
-    @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
+    @Secured({"ROLE_Кладовщик"})
     @GetMapping(value = "/get-by-name-form")
     public ModelAndView getOperationTypeByNameForm() {
         ModelAndView modelAndView = new ModelAndView("getOperationTypeByNameForm");
@@ -65,7 +65,7 @@ public class OperationTypeController {
         return modelAndView;
     }
 
-    @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
+    @Secured({"ROLE_Кладовщик"})
     @PostMapping(value = "/get-by-name")
     public ModelAndView getOperationTypeByName(@ModelAttribute OperationTypeDto operationTypeDto) {
         ModelAndView modelAndView = new ModelAndView("getAllOperationType");

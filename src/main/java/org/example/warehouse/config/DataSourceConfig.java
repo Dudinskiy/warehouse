@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
@@ -16,12 +17,13 @@ import org.springframework.transaction.TransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.util.Hashtable;
-import java.util.Properties;
+
 
 @Configuration
 @EnableTransactionManagement
@@ -40,37 +42,37 @@ public class DataSourceConfig implements TransactionManagementConfigurer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DataSourceConfig.class);
 
-    @Bean
+    @Bean(destroyMethod="")
     public DataSource dataSource() {
-        SingleConnectionDataSource dataSource = new SingleConnectionDataSource();
-
-        dataSource.setSuppressClose(true);
-        dataSource.setUrl(url);
-        dataSource.setUsername(userName);
-        dataSource.setPassword(password);
-        dataSource.setDriverClassName(driver);
+//        SingleConnectionDataSource dataSource = new SingleConnectionDataSource();
+//
+//        dataSource.setSuppressClose(true);
+//        dataSource.setUrl(url);
+//        dataSource.setUsername(userName);
+//        dataSource.setPassword(password);
+//        dataSource.setDriverClassName(driver);
 //
 //        return dataSource;
-//        DataSource dataSource = null;
-//        Context context = null;
-//        Hashtable hashtable = new Hashtable();
-//        hashtable.put(Context.INITIAL_CONTEXT_FACTORY, "weblogic.jndi.WLInitialContextFactory");
-//        hashtable.put(Context.PROVIDER_URL, "t3://localhost:7001");
-//
-//        try {
-//            context = new InitialContext(hashtable);
-//            dataSource = (DataSource) context.lookup("jdbc/WarehouseDataSource");
-//        } catch (NamingException e) {
-//            LOGGER.error("Error DataSource setup", e);
-//        } finally {
-//            try {
-//                if (context != null) {
-//                    context.close();
-//                }
-//            } catch (NamingException e) {
-//                LOGGER.error("Error DataSource setup", e);
-//            }
-//        }
+        DataSource dataSource = null;
+        Context context = null;
+        Hashtable hashtable = new Hashtable();
+        hashtable.put(Context.INITIAL_CONTEXT_FACTORY, "weblogic.jndi.WLInitialContextFactory");
+        hashtable.put(Context.PROVIDER_URL, "t3://localhost:7001");
+
+        try {
+            context = new InitialContext(hashtable);
+            dataSource = (DataSource) context.lookup("jdbc/WarehouseDataSource");
+        } catch (NamingException e) {
+            LOGGER.error("Error DataSource setup", e);
+        } finally {
+            try {
+                if (context != null) {
+                    context.close();
+                }
+            } catch (NamingException e) {
+                LOGGER.error("Error DataSource setup", e);
+            }
+        }
         return dataSource;
     }
 
@@ -79,14 +81,13 @@ public class DataSourceConfig implements TransactionManagementConfigurer {
         return new DataSourceTransactionManager(dataSource());
     }
 
-
     @Override
     public TransactionManager annotationDrivenTransactionManager() {
         return txManager();
     }
 
     @Bean
-    public SpringLiquibase springLiquibase(DataSource dataSource){
+    public SpringLiquibase springLiquibase(DataSource dataSource) {
         SpringLiquibase springLiquibase = new SpringLiquibase();
         springLiquibase.setDataSource(dataSource);
         springLiquibase.setChangeLog(changelog);

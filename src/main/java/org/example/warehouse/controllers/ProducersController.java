@@ -23,7 +23,7 @@ public class ProducersController {
     private final ProducersService producersService;
     private final CountriesService countriesService;
 
-    @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
+    @Secured({"ROLE_Кладовщик"})
     @GetMapping(value = "/add")
     public ModelAndView addProducer() {
         ModelAndView modelAndView = new ModelAndView("addProducer");
@@ -34,7 +34,7 @@ public class ProducersController {
         return modelAndView;
     }
 
-    @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
+    @Secured({"ROLE_Кладовщик"})
     @PostMapping(value = "/create")
     public ModelAndView createProducer(@ModelAttribute ProducersDto producersDto) {
         String response;
@@ -46,7 +46,7 @@ public class ProducersController {
         return new ModelAndView("addProducerRes", "response", response);
     }
 
-    @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
+    @Secured({"ROLE_Кладовщик"})
     @GetMapping(value = "/get-all")
     public ModelAndView getAllProducers() {
         ModelAndView modelAndView = new ModelAndView("getAllProducers");
@@ -55,11 +55,7 @@ public class ProducersController {
         return modelAndView;
     }
 
-    public ModelAndView getProducerById(ProducersDto producersDto) {
-        return null;
-    }
-
-    @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
+    @Secured({"ROLE_Кладовщик"})
     @GetMapping(value = "/get-by-name-form")
     public ModelAndView getCountryByNameForm() {
         ModelAndView modelAndView = new ModelAndView("getProducerByNameForm");
@@ -67,7 +63,7 @@ public class ProducersController {
         return modelAndView;
     }
 
-    @Secured({"ROLE_Кладовщик", "ROLE_Администратор"})
+    @Secured({"ROLE_Кладовщик"})
     @PostMapping(value = "/get-by-name")
     public ModelAndView getProducerByNameFull(@ModelAttribute ProducersFullDto producersFullDto) {
         ModelAndView modelAndView = new ModelAndView("getAllProducers");
@@ -75,10 +71,6 @@ public class ProducersController {
         producersFullDtoResList.add(producersService.getProducerByNameFull(producersFullDto));
         modelAndView.addObject("producersFullDtoResList", producersFullDtoResList);
         return modelAndView;
-    }
-
-    public ModelAndView deleteProducerById(ProducersDto producersDto) {
-        return null;
     }
 
 }

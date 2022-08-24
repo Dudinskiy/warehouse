@@ -66,6 +66,11 @@ public class OperationsServiceImpl implements OperationsService {
         if (AppConstants.RECEPTION_TYPE.equals(typeEntity.getTypeName())) {
             for (ProductOrderDto order : operationsDto.getProductList()) {
                 //Изменение количества товара
+                if (order.getOperationProdAmount() <= 0) {
+                    throw new OperationException("Недопустимое значение количества товара "
+                            + order.getProductName() + " в операции: "
+                            + order.getOperationProdAmount());
+                }
                 newProductAmount = order.getCurrentProdAmount() + order.getOperationProdAmount();
                 productsDAO.updateProductAmountById(order.getProductId(), newProductAmount);
 
@@ -76,10 +81,17 @@ public class OperationsServiceImpl implements OperationsService {
             }
         } else {
             for (ProductOrderDto order : operationsDto.getProductList()) {
+                if (order.getOperationProdAmount() <= 0) {
+                    throw new OperationException("Недопустимое значение количества товара "
+                            + order.getProductName() + " в операции: "
+                            + order.getOperationProdAmount());
+                }
                 //Проверка достаточности товара на складе для проведения операции
                 if (order.getCurrentProdAmount() < order.getOperationProdAmount()) {
-                    throw new OperationException("Недостаточное количество товара "
-                            + order.getProductName());
+                    throw new OperationException("Недостаточное количество товара: "
+                            + order.getProductName()
+                            + "\nКоличество на складе: " + order.getCurrentProdAmount()
+                            + " количество в товарной операции: " + order.getOperationProdAmount());
                 }
                 //Изменение количества товара
                 newProductAmount = order.getCurrentProdAmount() - order.getOperationProdAmount();

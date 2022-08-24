@@ -7,7 +7,16 @@ select {
 }
 
 p {
-    font: 16px sans-serif
+    font: 16px sans-serif;
+}
+
+table {
+    font: 16px sans-serif;
+    color: #202020;
+}
+
+table a {
+    color: #483D8B;
 }
 
 h1, h2, h3, h4 {
@@ -22,6 +31,7 @@ h1, h2, h3, h4 {
 
 .headerBox {
     display: table;
+
 }
 
 .mainTitle {
@@ -29,10 +39,41 @@ h1, h2, h3, h4 {
     width: 86.1%;
 }
 
-.login {
-    display: table-cell;
+.mainTitle h1 {
+    color: #e8e8e8;
 }
 
 .login {
+    color: #e8e8e8;
+    display: table-cell;
     text-align: right;
+}
+
+.login a {
+    color: #F0FFFF;
+    /*text-align: right;*/
+}
+
+.mainBody {
+    background-color: #e8e8e8;
+}
+
+.mainBody {
+    color: #303030;
+}
+
+.mainBody a {
+    color: #483D8B;
+}
+
+.menuBody {
+    background-color: #dcdcdc;
+}
+
+.menuBody a {
+    color: #483D8B;
+}
+
+footer {
+    background-color: #778899;
 }

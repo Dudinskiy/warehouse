@@ -38,14 +38,15 @@ public class OperationsController {
     @PostMapping(value = "/add-order")
     public ModelAndView addProductOrder(@ModelAttribute OperationsDto operationsDto) {
         ModelAndView modelAndView = new ModelAndView("redirect:/operations/order-form");
-        System.out.println("CONTROLLER addProductOrder(), operationsDto:" + operationsDto);
+
+        System.out.println("CONTROLLER addProductOrder: " + operationsDto);
 
         ProductsFullDto productsFullDto = new ProductsFullDto()
                 .setProductName(operationsDto.getProductName())
                 .setProducerName(operationsDto.getProducerName());
 
-        ProductsFullDtoRes productsFullDtoRes = productsService.getProductByNameFull(productsFullDto);
-        System.out.println("CONTROLLER addProductOrder(), productsFullDtoRes:" + productsFullDtoRes);
+        ProductsFullDtoRes productsFullDtoRes = productsService
+                .getProductByNameAndProducerFull(productsFullDto);
 
         ProductOrderDto productOrderDto = new ProductOrderDto();
         productOrderDto.setProductId(productsFullDtoRes.getProductId())
@@ -53,6 +54,7 @@ public class OperationsController {
                 .setProducerName(productsFullDtoRes.getProducerName())
                 .setCurrentProdAmount(productsFullDtoRes.getProductAmount())
                 .setOperationProdAmount(operationsDto.getOperationProdAmount());
+
         if (!productOrderDtoList.contains(productOrderDto)) {
             productOrderDtoList.add(productOrderDto);
         }
@@ -96,7 +98,6 @@ public class OperationsController {
         operationsDto.setProductList(productOrderDtoList);
 
         List<OperationTypeDtoRes> operationTypeDtoResList = operationTypeService.getAllOperationType();
-        System.out.println("!!!CONTROLLER createOperationForm(), operationTypeDtoResList: " + operationTypeDtoResList);
 
         operationsDto.setOperationTypeList(operationTypeDtoResList);
         modelAndView.addObject("operationsDto", operationsDto);
@@ -107,7 +108,6 @@ public class OperationsController {
     @PostMapping(value = "/create")
     public ModelAndView createOperation(@ModelAttribute OperationsDto operationsDto) {
         ModelAndView modelAndView = new ModelAndView("getOperationRes");
-        System.out.println("CONTROLLER createOperation: " + operationsDto);
 
         operationsDto.setProductList(productOrderDtoList);
         operationsService.createOperation(operationsDto);
@@ -186,8 +186,6 @@ public class OperationsController {
     @Secured("ROLE_Кладовщик")
     @PostMapping(value = "/report-by-day-type")
     public ModelAndView getOperationReportByDayAndType(@ModelAttribute OperationsDto operationsDto) {
-        System.out.println("!!!CONTROLLER getOperationReportByDayAndType(), operationsDto: " + operationsDto);
-
         OperationReportDtoRes operationReportDtoRes = operationsService
                 .getOperationReportByDayAndTypeFull(operationsDto);
         ModelAndView modelAndView = new ModelAndView("getOperationReportByDayAndType");

@@ -16,6 +16,10 @@ public interface ProductsService {
 
     ProductsFullDtoRes getProductByNameFull(ProductsFullDto productsFullDto);
 
+    ProductsFullDtoRes getProductByNameAndProducerFull(ProductsFullDto productsFullDto);
+
+    ProductsFullDtoRes getProductByIdFull(int id);
+
     List<ProductsFullDtoRes> getAllProductsFull();
 
     List<ProductsFullDtoRes> getAllProductFullByProducer(ProductsFullDto productsFullDto);

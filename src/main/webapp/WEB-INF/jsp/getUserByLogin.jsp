@@ -37,7 +37,7 @@
 
 <div id="container" style="width:100%">
 
-    <div id="menu" style="background-color:#bebebe; height:100%; width:15%; float:left; ">
+    <div class="menuBody" id="menu" style="height:100%; width:15%; float:left; ">
         <nav>
             <h2>Меню</h2>
             <p><a href="/warehouse/operations/order-form">Создать список товаров</a></p>
@@ -64,7 +64,7 @@
         </nav>
     </div>
 
-    <div id="content" style="background-color:#d3d3d3; height:100%; width:85%; float:left;">
+    <div class="mainBody" id="content" style="height:100%; width:85%; float:left;">
 
         <h2>Данные пользователя:</h2>
         <table border="1" cellspacing="2" , cellpadding="10">
@@ -88,7 +88,7 @@
 </div>
 
 <footer>
-    <div id="footer" style="background-color:#778899; clear:both; text-align:center;">
+    <div id="footer" style="clear:both; text-align:center;">
         © Александр Дудинский
     </div>
 </footer>

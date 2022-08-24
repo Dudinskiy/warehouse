@@ -97,6 +97,48 @@ public class ProductsServiceImpl implements ProductsService {
     }
 
     @Override
+    public ProductsFullDtoRes getProductByNameAndProducerFull(ProductsFullDto productsFullDto) {
+        if (productsFullDto == null) {
+            return null;
+        }
+        ProductsEntityFull entity = productsDAO
+                .getProductByNameAndProducerFull(productsFullDto.getProductName()
+                        , productsFullDto.getProducerName());
+        ProductsFullDtoRes product = null;
+        if (entity != null) {
+            product = new ProductsFullDtoRes()
+                    .setRowNumber(entity.getRowNumber())
+                    .setProductId(entity.getProductId())
+                    .setProductName(entity.getProductName())
+                    .setProducerName(entity.getProducerName())
+                    .setCountryName(entity.getCountryName())
+                    .setPrice(entity.getPrice())
+                    .setProductAmount(entity.getProductAmount());
+        }
+        return product;
+    }
+
+    @Override
+    public ProductsFullDtoRes getProductByIdFull(int id) {
+        if (id == 0) {
+            return null;
+        }
+        ProductsEntityFull entity = productsDAO.getProductByIdFull(id);
+        ProductsFullDtoRes product = null;
+        if (entity != null) {
+            product = new ProductsFullDtoRes()
+                    .setRowNumber(entity.getRowNumber())
+                    .setProductId(entity.getProductId())
+                    .setProductName(entity.getProductName())
+                    .setProducerName(entity.getProducerName())
+                    .setCountryName(entity.getCountryName())
+                    .setPrice(entity.getPrice())
+                    .setProductAmount(entity.getProductAmount());
+        }
+        return product;
+    }
+
+    @Override
     public List<ProductsFullDtoRes> getAllProductsFull() {
         List<ProductsFullDtoRes> productsList = new ArrayList<>();
         List<ProductsEntityFull> entityList = productsDAO.getAllProductFull();

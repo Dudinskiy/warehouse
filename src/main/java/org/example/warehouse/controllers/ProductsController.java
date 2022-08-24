@@ -53,14 +53,6 @@ public class ProductsController {
         return modelAndView;
     }
 
-    public ModelAndView getAllProductsFullByProducer() {
-        return null;
-    }
-
-    public ModelAndView getProductById(ProductsDto productsDto) {
-        return null;
-    }
-
     @Secured({"ROLE_Кладовщик", "ROLE_Сотрудник"})
     @GetMapping(value = "/get-by-name-form")
     public ModelAndView getProductByNameForm() {

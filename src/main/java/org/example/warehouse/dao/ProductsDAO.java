@@ -17,6 +17,10 @@ public interface ProductsDAO {
 
     ProductsEntityFull getProductByNameFull(String name);
 
+    ProductsEntityFull getProductByNameAndProducerFull(String name, String producer);
+
+    ProductsEntityFull getProductByIdFull(int id);
+
     List<ProductsEntityFull> getAllProductFull();
 
     List<ProductsEntityFull> getAllProductFullByProducer(String prodName);
